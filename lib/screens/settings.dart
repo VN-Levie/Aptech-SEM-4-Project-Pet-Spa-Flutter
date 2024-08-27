@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:pet_spa/constants/Theme.dart';
+import 'package:project/constants/Theme.dart';
 
 //widgets
-import 'package:pet_spa/widgets/navbar.dart';
-import 'package:pet_spa/widgets/table-cell.dart';
+import 'package:project/widgets/navbar.dart';
+import 'package:project/widgets/table-cell.dart';
 
-import 'package:pet_spa/widgets/drawer.dart';
+import 'package:project/widgets/drawer.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});

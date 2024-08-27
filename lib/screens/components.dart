@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-import 'package:pet_spa/constants/Theme.dart';
+import 'package:project/constants/Theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //widgets
-import 'package:pet_spa/widgets/navbar.dart';
-import 'package:pet_spa/widgets/drawer.dart';
-import 'package:pet_spa/widgets/input.dart';
-import 'package:pet_spa/widgets/card-horizontal.dart';
-import 'package:pet_spa/widgets/card-category.dart';
-import 'package:pet_spa/widgets/card-small.dart';
-import 'package:pet_spa/widgets/card-square.dart';
-import 'package:pet_spa/widgets/slider-product.dart';
-import 'package:pet_spa/widgets/photo-album.dart';
+import 'package:project/widgets/navbar.dart';
+import 'package:project/widgets/drawer.dart';
+import 'package:project/widgets/input.dart';
+import 'package:project/widgets/card-horizontal.dart';
+import 'package:project/widgets/card-category.dart';
+import 'package:project/widgets/card-small.dart';
+import 'package:project/widgets/card-square.dart';
+import 'package:project/widgets/slider-product.dart';
+import 'package:project/widgets/photo-album.dart';
 
-import 'package:pet_spa/widgets/table-cell.dart';
+import 'package:project/widgets/table-cell.dart';
 
 final Map<String, Map<String, String>> homeCards = {
   "Ice Cream": {

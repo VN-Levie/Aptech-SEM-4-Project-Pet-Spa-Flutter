@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import 'package:pet_spa/constants/Theme.dart';
+import 'package:project/constants/Theme.dart';
 
 //widgets
-import 'package:pet_spa/widgets/navbar.dart';
-import 'package:pet_spa/widgets/card-horizontal.dart';
-import 'package:pet_spa/widgets/card-small.dart';
-import 'package:pet_spa/widgets/card-square.dart';
-import 'package:pet_spa/widgets/drawer.dart';
+import 'package:project/widgets/navbar.dart';
+import 'package:project/widgets/card-horizontal.dart';
+import 'package:project/widgets/card-small.dart';
+import 'package:project/widgets/card-square.dart';
+import 'package:project/widgets/drawer.dart';
 
 final Map<String, Map<String, String>> homeCards = {
   "Ice Cream": {

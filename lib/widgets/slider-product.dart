@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'package:pet_spa/constants/Theme.dart';
+import 'package:project/constants/Theme.dart';
 
 class ProductCarousel extends StatefulWidget {
   final List<Map<String, String>> imgArray;

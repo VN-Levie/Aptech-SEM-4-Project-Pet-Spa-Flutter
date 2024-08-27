@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import 'package:pet_spa/constants/Theme.dart';
+import 'package:project/constants/Theme.dart';
 
-// import 'package:pet_spa/screens/categories.dart';
-// import 'package:pet_spa/screens/best-deals.dart';
-// import 'package:pet_spa/screens/search.dart';
-// import 'package:pet_spa/screens/cart.dart';
-// import 'package:pet_spa/screens/chat.dart';
+// import 'package:project/screens/categories.dart';
+// import 'package:project/screens/best-deals.dart';
+// import 'package:project/screens/search.dart';
+// import 'package:project/screens/cart.dart';
+// import 'package:project/screens/chat.dart';
 
-import 'package:pet_spa/widgets/input.dart';
+import 'package:project/widgets/input.dart';
 
 class Navbar extends StatefulWidget implements PreferredSizeWidget {
   late String title;
@@ -119,7 +119,7 @@ class _NavbarState extends State<Navbar> {
                     padding: const EdgeInsets.only(top: 8, bottom: 4, left: 15, right: 15),
                     child: Input(
                         placeholder: "What are you looking for?",
-                        controller: widget.searchController!,
+                        controller: widget.searchController ?? TextEditingController(),
                         onChanged: widget.searchOnChanged as void Function(String)? ?? (String value) {},
                         autofocus: widget.searchAutofocus,
                         outlineBorder: true,

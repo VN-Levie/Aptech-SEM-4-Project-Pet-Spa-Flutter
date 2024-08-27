@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../auth/login_screen.dart';
-
+import 'package:project/widgets/drawer.dart';
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -61,103 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text('Home'),
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.blue,
-                ),
-                child: Text(
-                  'Menu',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Home'),
-                onTap: () {
-                  // Navigate to the Home screen
-                  Navigator.pushReplacementNamed(context, '/home');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.pets),
-                title: Text('Pet Shop'),
-                onTap: () {
-                  // Navigate to the Pet Shop screen (to be implemented)
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.hotel),
-                title: Text('Pet Hotel'),
-                onTap: () {
-                  // Navigate to the Pet Hotel screen (to be implemented)
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('Profile'),
-                onTap: () {
-                  // Navigate to the Profile screen (to be implemented)
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('Test'),
-                onTap: () {
-                  // Navigate to the Profile screen (to be implemented)
-                  Navigator.pushReplacementNamed(context, '/test');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('component'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, '/component');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('onboarding'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, '/onboarding');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('pro'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, '/pro');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('profile'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, '/profile');
-                },
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('settings'),
-                onTap: () {
-                  Navigator.pushReplacementNamed(context, '/settings');
-                },
-              ),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Logout'),
-                onTap: _logout,
-              ),
-            ],
-          ),
-        ),
+        drawer: MaterialDrawer(currentPage: "Home"),
         body: Center(
           child: Text('Welcome to the SPA PET app!'),
         ),

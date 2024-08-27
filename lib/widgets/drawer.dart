@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 // import 'package:url_launcher/url_launcher.dart';
 
-import 'package:pet_spa/constants/Theme.dart';
+import 'package:project/constants/Theme.dart';
 
-import 'package:pet_spa/widgets/drawer-tile.dart';
+import 'package:project/widgets/drawer-tile.dart';
 
 class MaterialDrawer extends StatelessWidget {
   final String currentPage;
 
-  MaterialDrawer({required this.currentPage});
+  const MaterialDrawer({super.key, required this.currentPage});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class MaterialDrawer extends StatelessWidget {
       child: Container(
           child: Column(children: [
         DrawerHeader(
-            decoration: BoxDecoration(color: MaterialColors.drawerHeader),
+            decoration: const BoxDecoration(color: MaterialColors.drawerHeader),
             child: Container(
                 // padding: EdgeInsets.symmetric(horizontal: 28.0),
                 child: Column(
@@ -24,13 +24,12 @@ class MaterialDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      "https://images.unsplash.com/photo-1512529920731-e8abaea917a5?fit=crop&w=840&q=80"),
+                  // backgroundImage: NetworkImage("https://i.imgur.com/mD2jD2w.jpeg"),
+                  backgroundImage: Image.asset("assets/img/logo.jpg").image,
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0, top: 16.0),
-                  child: Text("Rachel Brown",
-                      style: TextStyle(color: Colors.white, fontSize: 21)),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 8.0, top: 16.0),
+                  child: Text("Pet Spa", style: TextStyle(color: Colors.white, fontSize: 21)),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8.0),
@@ -38,32 +37,19 @@ class MaterialDrawer extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 8.0),
-                        child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 6),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: MaterialColors.label),
-                            child: Text("Pro",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16))),
+                        child: Container(padding: const EdgeInsets.symmetric(horizontal: 6), decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: MaterialColors.label), child: const Text("Pro", style: TextStyle(color: Colors.white, fontSize: 16))),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 16.0),
-                        child: Text("Seller",
-                            style: TextStyle(
-                                color: MaterialColors.muted, fontSize: 16)),
+                      const Padding(
+                        padding: EdgeInsets.only(right: 16.0),
+                        child: Text("Seller", style: TextStyle(color: MaterialColors.muted, fontSize: 16)),
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text("4.8",
-                                style: TextStyle(
-                                    color: MaterialColors.warning,
-                                    fontSize: 16)),
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Text("999", style: TextStyle(color: MaterialColors.warning, fontSize: 16)),
                           ),
-                          Icon(Icons.star_border,
-                              color: MaterialColors.warning, size: 20)
+                          Icon(Icons.star_border, color: MaterialColors.warning, size: 20)
                         ],
                       )
                     ],
@@ -73,67 +59,52 @@ class MaterialDrawer extends StatelessWidget {
             ))),
         Expanded(
             child: ListView(
-          padding: EdgeInsets.only(top: 8, left: 8, right: 8),
+          padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
           children: [
             DrawerTile(
                 icon: Icons.home,
                 onTap: () {
-                  if (currentPage != "Home")
-                    Navigator.pushReplacementNamed(context, '/home');
+                  if (currentPage != "Home") Navigator.pushReplacementNamed(context, '/home');
                 },
                 iconColor: Colors.black,
                 title: "Home",
                 isSelected: currentPage == "Home" ? true : false),
             DrawerTile(
-                icon: Icons.face,
+                icon: Icons.calendar_month,
                 onTap: () {
-                  if (currentPage != "Woman")
-                    Navigator.pushReplacementNamed(context, '/woman');
+                  if (currentPage != "Components") Navigator.pushReplacementNamed(context, '/component');
                 },
                 iconColor: Colors.black,
-                title: "Woman",
-                isSelected: currentPage == "Woman" ? true : false),
+                title: "Spa Booking",
+                isSelected: currentPage == "Components" ? true : false),
             DrawerTile(
-                icon: Icons.tag_faces,
+                icon: Icons.shopping_cart,
                 onTap: () {
-                  if (currentPage != "Man")
-                    Navigator.pushReplacementNamed(context, '/man');
+                  if (currentPage != "Components") Navigator.pushReplacementNamed(context, '/component');
                 },
                 iconColor: Colors.black,
-                title: "Man",
-                isSelected: currentPage == "Man" ? true : false),
+                title: "Pet Shop",
+                isSelected: currentPage == "Components" ? true : false),
             DrawerTile(
-                icon: Icons.child_friendly,
+                icon: Icons.hotel,
                 onTap: () {
-                  if (currentPage != "Kids")
-                    Navigator.pushReplacementNamed(context, '/kids');
+                  if (currentPage != "Components") Navigator.pushReplacementNamed(context, '/component');
                 },
                 iconColor: Colors.black,
-                title: "Kids",
-                isSelected: currentPage == "Kids" ? true : false),
+                title: "Pet Hotel",
+                isSelected: currentPage == "Components" ? true : false),
             DrawerTile(
-                icon: Icons.grain,
+                icon: Icons.dashboard_customize,
                 onTap: () {
-                  if (currentPage != "New Collection")
-                    Navigator.pushReplacementNamed(context, '/newcollection');
+                  if (currentPage != "Components") Navigator.pushReplacementNamed(context, '/component');
                 },
                 iconColor: Colors.black,
-                title: "New Collection",
-                isSelected: currentPage == "New Collection" ? true : false),
-            DrawerTile(
-                icon: Icons.settings_input_component,
-                onTap: () {
-                  if (currentPage != "Components")
-                    Navigator.pushReplacementNamed(context, '/components');
-                },
-                iconColor: Colors.black,
-                title: "Components",
+                title: "Accessories Customization",
                 isSelected: currentPage == "Components" ? true : false),
             DrawerTile(
                 icon: Icons.account_circle,
                 onTap: () {
-                  if (currentPage != "Profile")
-                    Navigator.pushReplacementNamed(context, '/profile');
+                  if (currentPage != "Profile") Navigator.pushReplacementNamed(context, '/profile');
                 },
                 iconColor: Colors.black,
                 title: "Profile",
@@ -141,17 +112,23 @@ class MaterialDrawer extends StatelessWidget {
             DrawerTile(
                 icon: Icons.settings,
                 onTap: () {
-                  if (currentPage != "Settings")
-                    Navigator.pushReplacementNamed(context, '/settings');
+                  if (currentPage != "Settings") Navigator.pushReplacementNamed(context, '/settings');
                 },
                 iconColor: Colors.black,
-                title: "Settings",
+                title: "App Settings",
+                isSelected: currentPage == "Settings" ? true : false),
+            DrawerTile(
+                icon: Icons.settings,
+                onTap: () {
+                  if (currentPage != "Settings") Navigator.pushReplacementNamed(context, '/onboarding');
+                },
+                iconColor: Colors.black,
+                title: "onboarding",
                 isSelected: currentPage == "Settings" ? true : false),
             DrawerTile(
                 icon: Icons.exit_to_app,
                 onTap: () {
-                  if (currentPage != "Sign In")
-                    Navigator.pushReplacementNamed(context, '/signin');
+                  //if (currentPage != "Sign In") Navigator.pushReplacementNamed(context, '/signin');
                 },
                 iconColor: Colors.black,
                 title: "Sign In",
@@ -159,8 +136,7 @@ class MaterialDrawer extends StatelessWidget {
             DrawerTile(
                 icon: Icons.open_in_browser,
                 onTap: () {
-                  if (currentPage != "Sign Up")
-                    Navigator.pushReplacementNamed(context, '/signup');
+                  //if (currentPage != "Sign Up") Navigator.pushReplacementNamed(context, '/signup');
                 },
                 iconColor: Colors.black,
                 title: "Sign Up",
