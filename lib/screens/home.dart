@@ -65,8 +65,8 @@ class Home extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 16.0),
                   child: CardHorizontal(
                       cta: "View article",
-                      title: homeCards["Ice Cream"]['title'],
-                      img: homeCards["Ice Cream"]['image'],
+                      title: homeCards["Ice Cream"]?['title'] ?? "Ice Cream Title",
+                      img: homeCards["Ice Cream"]?['image'] ?? "https://via.placeholder.com/200?text=Ice+Cream",
                       tap: () {
                         Navigator.pushReplacementNamed(context, '/pro');
                       }),
@@ -77,15 +77,15 @@ class Home extends StatelessWidget {
                   children: [
                     CardSmall(
                         cta: "View article",
-                        title: homeCards["Makeup"]['title'],
-                        img: homeCards["Makeup"]['image'],
+                        title: homeCards["Makeup"]?['title'] ?? "Makeup Title",
+                        img: homeCards["Makeup"]?['image'] ?? "https://via.placeholder.com/200?text=Makeup",
                         tap: () {
                           Navigator.pushReplacementNamed(context, '/pro');
                         }),
                     CardSmall(
                         cta: "View article",
-                        title: homeCards["Coffee"]['title'],
-                        img: homeCards["Coffee"]['image'],
+                        title: homeCards["Coffee"]?['title'] ?? "Coffee Title",
+                        img: homeCards["Coffee"]?['image'] ?? "https://via.placeholder.com/200?text=Coffee",
                         tap: () {
                           Navigator.pushReplacementNamed(context, '/pro');
                         })
@@ -94,8 +94,8 @@ class Home extends StatelessWidget {
                 SizedBox(height: 8.0),
                 CardHorizontal(
                     cta: "View article",
-                    title: homeCards["Fashion"]['title'],
-                    img: homeCards["Fashion"]['image'],
+                    title: homeCards["Fashion"]?['title'] ?? "Fashion Title",
+                    img: homeCards["Fashion"]?['image'] ?? "https://via.placeholder.com/200?text=Fashion",
                     tap: () {
                       Navigator.pushReplacementNamed(context, '/pro');
                     }),
@@ -104,8 +104,8 @@ class Home extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 32.0),
                   child: CardSquare(
                       cta: "View article",
-                      title: homeCards["Argon"]['title'],
-                      img: homeCards["Argon"]['image'],
+                      title: homeCards["Argon"]?['title'] ?? "Argon Title",
+                      img: homeCards["Argon"]?['image'] ?? "https://via.placeholder.com/200?text=Argon",
                       tap: () {
                         Navigator.pushReplacementNamed(context, '/pro');
                       }),

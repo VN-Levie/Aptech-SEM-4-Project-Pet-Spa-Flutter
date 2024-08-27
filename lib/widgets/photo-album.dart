@@ -4,7 +4,7 @@ import 'package:pet_spa/constants/Theme.dart';
 class PhotoAlbum extends StatelessWidget {
   final List<String> imgArray;
 
-  PhotoAlbum({@required this.imgArray});
+  PhotoAlbum({required this.imgArray});
 
   @override
   Widget build(BuildContext context) {

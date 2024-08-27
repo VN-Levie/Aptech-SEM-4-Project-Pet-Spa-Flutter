@@ -10,7 +10,7 @@ class CardSmall extends StatelessWidget {
 
   final String cta;
   final String img;
-  final Function tap;
+  final VoidCallback tap;
   final String title;
 
   static void defaultFunc() {
@@ -25,7 +25,7 @@ class CardSmall extends StatelessWidget {
       margin: EdgeInsets.only(top: 10),
       child: GestureDetector(
           onTap: tap,
-          child: Stack(overflow: Overflow.clip, children: [
+          child: Stack(clipBehavior: Clip.hardEdge, children: [
             Card(
                 elevation: 0.7,
                 shape: RoundedRectangleBorder(

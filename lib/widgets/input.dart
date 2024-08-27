@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:pet_spa/constants/Theme.dart';
 
 class Input extends StatelessWidget {
-  final String placeholder;
-  final Widget suffixIcon;
-  final Widget prefixIcon;
-  final Function onTap;
-  final Function onChanged;
-  final TextEditingController controller;
+  final String? placeholder;
+  final Widget? suffixIcon;
+  final Widget? prefixIcon;
+  final void Function()? onTap;
+  final void Function(String)? onChanged;
+  final TextEditingController? controller;
   final bool autofocus;
   final Color borderColor;
-  final bool filled;
-  final Color fillColor;
+  final bool? filled;
+  final Color? fillColor;
   final Color textColor;
   final Color enabledBorderColor;
   final Color focusedBorderColor;

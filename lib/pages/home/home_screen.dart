@@ -106,6 +106,49 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Navigate to the Profile screen (to be implemented)
                 },
               ),
+              ListTile(
+                leading: Icon(Icons.account_circle),
+                title: Text('Test'),
+                onTap: () {
+                  // Navigate to the Profile screen (to be implemented)
+                  Navigator.pushReplacementNamed(context, '/test');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('component'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/component');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('onboarding'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/onboarding');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('pro'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/pro');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('profile'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/profile');
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('settings'),
+                onTap: () {
+                  Navigator.pushReplacementNamed(context, '/settings');
+                },
+              ),
               Divider(),
               ListTile(
                 leading: Icon(Icons.logout),

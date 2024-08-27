@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:pet_spa/constants/Theme.dart';
 
 class DrawerTile extends StatelessWidget {
-  final String title;
-  final IconData icon;
-  final Function onTap;
-  final bool isSelected;
-  final Color iconColor;
+  late String? title;
+  late IconData? icon;
+  late void Function()? onTap;
+  late bool isSelected;
+  late Color iconColor;
 
   DrawerTile(
       {this.title,
@@ -34,7 +34,7 @@ class DrawerTile extends StatelessWidget {
                   child: Icon(icon,
                       size: 20, color: isSelected ? Colors.white : iconColor),
                 ),
-                Text(title,
+                Text(title!,
                     style: TextStyle(
                         fontSize: 15,
                         color: isSelected ? Colors.white : Colors.black))

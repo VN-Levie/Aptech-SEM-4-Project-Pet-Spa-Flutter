@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pet_spa/screens/components.dart';
+import 'package:pet_spa/screens/home.dart';
+import 'package:pet_spa/screens/onboarding.dart';
+import 'package:pet_spa/screens/pro.dart';
+import 'package:pet_spa/screens/profile.dart';
+import 'package:pet_spa/screens/settings.dart';
 import 'pages/auth/login_screen.dart';
 import 'pages/auth/register_screen.dart';  // Thêm dòng này
 import 'pages/home/home_screen.dart';
@@ -20,7 +26,13 @@ class MyApp extends StatelessWidget {
         '/': (context) => HomeScreen(),
         '/login': (context) => LoginScreen(),
         '/home': (context) => HomeScreen(),
-        '/register': (context) => RegisterScreen(),  // Định nghĩa route cho màn hình đăng ký
+        '/register': (context) => RegisterScreen(), 
+        '/test_home': (context) => Home(),  
+        '/component': (context) => Components(),  
+        '/onboarding': (context) => Onboarding(),  
+        '/pro': (context) => Pro(),  
+        '/profile': (context) => Profile(),  
+        '/settings': (context) => Settings(),  
       },
     );
   }
