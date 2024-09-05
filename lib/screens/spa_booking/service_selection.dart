@@ -7,7 +7,7 @@ import 'package:project/constants/Theme.dart';
 
 class ServiceSelection extends StatefulWidget {
   final int categoryId;
-  ServiceSelection({required this.categoryId});
+  const ServiceSelection({super.key, required this.categoryId});
 
   @override
   _ServiceSelectionState createState() => _ServiceSelectionState();

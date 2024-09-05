@@ -3,7 +3,7 @@ import 'spa_confirm.dart';
 
 class PetInfo extends StatefulWidget {
   final int serviceId;
-  PetInfo({required this.serviceId});
+  const PetInfo({super.key, required this.serviceId});
 
   @override
   _PetInfoState createState() => _PetInfoState();
@@ -16,14 +16,14 @@ class _PetInfoState extends State<PetInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Pet Information')),
+      appBar: AppBar(title: const Text('Pet Information')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _petNameController,
-              decoration: InputDecoration(labelText: 'Pet Name'),
+              decoration: const InputDecoration(labelText: 'Pet Name'),
             ),
             DropdownButton<String>(
               value: _petType,
@@ -53,7 +53,7 @@ class _PetInfoState extends State<PetInfo> {
                   ),
                 );
               },
-              child: Text('Next'),
+              child: const Text('Next'),
             ),
           ],
         ),

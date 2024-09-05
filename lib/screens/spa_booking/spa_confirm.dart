@@ -7,7 +7,7 @@ class SpaConfirm extends StatefulWidget {
   final String petName;
   final String petType;
 
-  SpaConfirm({required this.serviceId, required this.petName, required this.petType});
+  const SpaConfirm({super.key, required this.serviceId, required this.petName, required this.petType});
 
   @override
   _SpaConfirmState createState() => _SpaConfirmState();
@@ -50,7 +50,7 @@ class _SpaConfirmState extends State<SpaConfirm> {
   _bookService() async {
     if (_selectedDate == null || _selectedTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a date and time')),
+        const SnackBar(content: Text('Please select a date and time')),
       );
       return;
     }
@@ -71,7 +71,7 @@ class _SpaConfirmState extends State<SpaConfirm> {
 
     await _databaseHelper.insertBooking(booking);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Booking confirmed!')),
+      const SnackBar(content: Text('Booking confirmed!')),
     );
     Navigator.pushReplacementNamed(context, '/booking_history');
   }
@@ -79,7 +79,7 @@ class _SpaConfirmState extends State<SpaConfirm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Confirm Booking')),
+      appBar: AppBar(title: const Text('Confirm Booking')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -88,12 +88,12 @@ class _SpaConfirmState extends State<SpaConfirm> {
             Text('Pet: ${widget.petName} (${widget.petType})'),
             ListTile(
               title: Text(_selectedDate == null ? 'Select Date' : 'Selected Date: ${DateFormat('yyyy-MM-dd').format(_selectedDate!)}'),
-              trailing: Icon(Icons.calendar_today),
+              trailing: const Icon(Icons.calendar_today),
               onTap: _pickDate,
             ),
             ListTile(
               title: Text(_selectedTime == null ? 'Select Time' : 'Selected Time: ${_selectedTime!.format(context)}'),
-              trailing: Icon(Icons.access_time),
+              trailing: const Icon(Icons.access_time),
               onTap: _pickTime,
             ),
             DropdownButton<String>(
@@ -116,7 +116,7 @@ class _SpaConfirmState extends State<SpaConfirm> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _bookService,
-              child: Text('Confirm Booking'),
+              child: const Text('Confirm Booking'),
             ),
           ],
         ),

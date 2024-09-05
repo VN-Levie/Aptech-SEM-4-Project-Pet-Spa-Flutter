@@ -348,15 +348,15 @@ class _ComponentsState extends State<Components> {
                   child: Text("Inputs", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 16)),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 32.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 32.0),
                 child: Input(
                   placeholder: "placeholder",
                   focusedBorderColor: MaterialColors.muted,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Input(
                   placeholder: "theme",
                   focusedBorderColor: MaterialColors.primary,
@@ -365,8 +365,8 @@ class _ComponentsState extends State<Components> {
                   hintTextColor: MaterialColors.primary,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Input(
                   placeholder: "info",
                   focusedBorderColor: MaterialColors.info,
@@ -375,8 +375,8 @@ class _ComponentsState extends State<Components> {
                   hintTextColor: MaterialColors.info,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Input(
                   placeholder: "success",
                   focusedBorderColor: MaterialColors.success,
@@ -385,8 +385,8 @@ class _ComponentsState extends State<Components> {
                   hintTextColor: MaterialColors.success,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Input(
                   placeholder: "warning",
                   borderColor: MaterialColors.warning,
@@ -396,8 +396,8 @@ class _ComponentsState extends State<Components> {
                   hintTextColor: MaterialColors.warning,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Input(
                   placeholder: "danger",
                   borderColor: MaterialColors.error,
@@ -407,8 +407,8 @@ class _ComponentsState extends State<Components> {
                   hintTextColor: MaterialColors.error,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Input(
                   placeholder: "outline border",
                   outlineBorder: true,
@@ -419,8 +419,8 @@ class _ComponentsState extends State<Components> {
                   hintTextColor: MaterialColors.muted,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Input(
                   placeholder: "icon right",
                   outlineBorder: true,
@@ -429,7 +429,7 @@ class _ComponentsState extends State<Components> {
                   enabledBorderColor: MaterialColors.muted,
                   textColor: MaterialColors.muted,
                   hintTextColor: MaterialColors.muted,
-                  suffixIcon: const Icon(Icons.camera_enhance),
+                  suffixIcon: Icon(Icons.camera_enhance),
                 ),
               ),
               const Padding(

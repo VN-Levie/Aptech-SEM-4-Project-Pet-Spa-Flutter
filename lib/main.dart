@@ -9,7 +9,6 @@ import 'package:project/screens/spa_booking/booking_history.dart';
 import 'package:project/screens/spa_booking/spa_booking.dart';
 import 'screens/auth/login_screen.dart';
 import 'screens/auth/register_screen.dart'; // Thêm dòng này
-import 'pages/home/home_screen.dart';
 
 void main() {
   runApp(const MyApp());

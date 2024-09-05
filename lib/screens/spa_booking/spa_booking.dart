@@ -5,6 +5,8 @@ import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/drawer.dart';
 import 'package:project/constants/Theme.dart';
 class SpaBooking extends StatefulWidget {
+  const SpaBooking({super.key});
+
   @override
   _SpaBookingState createState() => _SpaBookingState();
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/database/database_helper.dart';
-import 'register_screen.dart';
 import '../../constants/Theme.dart'; // Import Theme constants
 import '../../widgets/input.dart'; // Sử dụng widget tùy chỉnh cho Input
 

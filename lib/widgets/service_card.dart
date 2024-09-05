@@ -6,7 +6,7 @@ class ServiceCard extends StatelessWidget {
   final double price;
   final VoidCallback onTap;
 
-  const ServiceCard({
+  const ServiceCard({super.key, 
     required this.title,
     required this.description,
     required this.price,

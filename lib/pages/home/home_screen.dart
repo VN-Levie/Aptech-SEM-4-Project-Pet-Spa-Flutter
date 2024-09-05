@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (!isLoggedIn) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     }
   }
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     await prefs.setBool('isLoggedIn', false);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 

@@ -6,7 +6,6 @@ import 'package:project/constants/Theme.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/card-horizontal.dart';
 import 'package:project/widgets/card-small.dart';
-import 'package:project/widgets/card-square.dart';
 import 'package:project/widgets/drawer.dart';
 
 final Map<String, Map<String, String>> homeCards = {

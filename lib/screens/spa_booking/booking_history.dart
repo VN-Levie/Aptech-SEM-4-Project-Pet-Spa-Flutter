@@ -101,7 +101,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          Text(
+          const Text(
             'Booked Dates',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
@@ -136,7 +136,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('Booking Details'),
+                        title: const Text('Booking Details'),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           crossAxisAlignment: CrossAxisAlignment.start,
