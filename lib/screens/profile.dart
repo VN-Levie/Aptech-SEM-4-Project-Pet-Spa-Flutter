@@ -17,6 +17,8 @@ List<String> imgArray = [
 ];
 
 class Profile extends StatelessWidget {
+  const Profile({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,12 +28,12 @@ class Profile extends StatelessWidget {
           transparent: true,
         ),
         backgroundColor: MaterialColors.bgColorScreen,
-        drawer: MaterialDrawer(currentPage: "Profile"),
+        drawer: const MaterialDrawer(currentPage: "Profile"),
         body: Stack(
           children: [
             Container(
               height: MediaQuery.of(context).size.height * 0.6,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   image: DecorationImage(
                       alignment: Alignment.topCenter,
                       image: NetworkImage(
@@ -53,13 +55,13 @@ class Profile extends StatelessWidget {
               margin: EdgeInsets.only(
                 top: MediaQuery.of(context).size.height * 0.50,
               ),
-              padding: EdgeInsets.symmetric(horizontal: 28),
+              padding: const EdgeInsets.symmetric(horizontal: 28),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0),
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 4.0),
                     child: Text("Rachel Brown",
                         style: TextStyle(fontSize: 28, color: Colors.white)),
                   ),
@@ -72,24 +74,24 @@ class Profile extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 6),
+                                padding: const EdgeInsets.symmetric(horizontal: 6),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
                                     color: MaterialColors.label),
-                                child: Text("Pro",
+                                child: const Text("Pro",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 16))),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
+                          const Padding(
+                            padding: EdgeInsets.only(right: 8.0),
                             child: Text("Seller",
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 16)),
                           ),
-                          Row(
+                          const Row(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 4.0),
+                                padding: EdgeInsets.only(right: 4.0),
                                 child: Text("4.8",
                                     style: TextStyle(
                                         color: MaterialColors.warning,
@@ -101,10 +103,10 @@ class Profile extends StatelessWidget {
                           )
                         ],
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
+                            padding: EdgeInsets.only(right: 8.0),
                             child: Icon(Icons.pin_drop,
                                 color: MaterialColors.muted),
                           ),
@@ -126,10 +128,10 @@ class Profile extends StatelessWidget {
                             color: Colors.black.withOpacity(0.2),
                             spreadRadius: 8,
                             blurRadius: 10,
-                            offset: Offset(0, 0))
+                            offset: const Offset(0, 0))
                       ],
                       color: Colors.white,
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(13.0),
                         topRight: Radius.circular(13.0),
                       )),
@@ -143,7 +145,7 @@ class Profile extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Row(
+                        const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Column(

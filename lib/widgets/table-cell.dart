@@ -5,7 +5,7 @@ import 'package:project/constants/Theme.dart';
 class TableCellSettings extends StatelessWidget {
   late String title;
   late void Function()? onTap;
-  TableCellSettings({required this.title, required this.onTap});
+  TableCellSettings({super.key, required this.title, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -16,9 +16,9 @@ class TableCellSettings extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(title, style: TextStyle(color: Colors.black)),
-            Padding(
-              padding: const EdgeInsets.only(right: 8.0),
+            Text(title, style: const TextStyle(color: Colors.black)),
+            const Padding(
+              padding: EdgeInsets.only(right: 8.0),
               child:
                   Icon(Icons.arrow_forward_ios, color: Colors.black, size: 14),
             )

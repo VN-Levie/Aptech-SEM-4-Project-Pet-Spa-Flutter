@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project/constants/Theme.dart';
 
 class CardSmall extends StatelessWidget {
-  CardSmall(
-      {this.title = "Placeholder Title",
+  const CardSmall(
+      {super.key, this.title = "Placeholder Title",
       this.cta = "",
       this.img = "https://via.placeholder.com/200",
       this.tap = defaultFunc});
@@ -22,13 +22,13 @@ class CardSmall extends StatelessWidget {
     return Flexible(
         child: Container(
       height: 235,
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: GestureDetector(
           onTap: tap,
           child: Stack(clipBehavior: Clip.hardEdge, children: [
             Card(
                 elevation: 0.7,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0))),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,13 +44,13 @@ class CardSmall extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(title,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: MaterialColors.caption,
                                       fontSize: 13)),
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Text(cta,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: MaterialColors.muted,
                                         fontSize: 11,
                                         fontWeight: FontWeight.w600)),
@@ -61,23 +61,23 @@ class CardSmall extends StatelessWidget {
                   ],
                 )),
             FractionalTranslation(
-                translation: Offset(0, -0.04),
+                translation: const Offset(0, -0.04),
                 child: Align(
                     alignment: Alignment.topCenter,
                     child: Container(
                         height: MediaQuery.of(context).size.height * 0.185,
                         width: MediaQuery.of(context).size.width / 2.5,
-                        padding: EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
                                   color: Colors.black.withOpacity(0.06),
                                   spreadRadius: 2,
                                   blurRadius: 1,
-                                  offset: Offset(0, 0))
+                                  offset: const Offset(0, 0))
                             ],
                             borderRadius:
-                                BorderRadius.all(Radius.circular(4.0)),
+                                const BorderRadius.all(Radius.circular(4.0)),
                             image: DecorationImage(
                               image: NetworkImage(img),
                               fit: BoxFit.cover,

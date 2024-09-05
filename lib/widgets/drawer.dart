@@ -72,11 +72,19 @@ class MaterialDrawer extends StatelessWidget {
             DrawerTile(
                 icon: Icons.calendar_month,
                 onTap: () {
-                  if (currentPage != "Components") Navigator.pushReplacementNamed(context, '/component');
+                  if (currentPage != "booking") Navigator.pushReplacementNamed(context, '/booking');
                 },
                 iconColor: Colors.black,
                 title: "Spa Booking",
-                isSelected: currentPage == "Components" ? true : false),
+                isSelected: currentPage == "booking" ? true : false),
+            DrawerTile(
+                icon: Icons.calendar_month,
+                onTap: () {
+                  if (currentPage != "booking_history") Navigator.pushReplacementNamed(context, '/booking_history');
+                },
+                iconColor: Colors.black,
+                title: "Booking History",
+                isSelected: currentPage == "booking_history" ? true : false),
             DrawerTile(
                 icon: Icons.shopping_cart,
                 onTap: () {
@@ -120,15 +128,15 @@ class MaterialDrawer extends StatelessWidget {
             DrawerTile(
                 icon: Icons.settings,
                 onTap: () {
-                  if (currentPage != "Settings") Navigator.pushReplacementNamed(context, '/onboarding');
+                  if (currentPage != "onboarding") Navigator.pushReplacementNamed(context, '/onboarding');
                 },
                 iconColor: Colors.black,
                 title: "onboarding",
-                isSelected: currentPage == "Settings" ? true : false),
+                isSelected: currentPage == "onboarding" ? true : false),
             DrawerTile(
                 icon: Icons.exit_to_app,
                 onTap: () {
-                  //if (currentPage != "Sign In") Navigator.pushReplacementNamed(context, '/signin');
+                  if (currentPage != "Sign In") Navigator.pushReplacementNamed(context, '/login');
                 },
                 iconColor: Colors.black,
                 title: "Sign In",

@@ -10,7 +10,7 @@ class DrawerTile extends StatelessWidget {
   late Color iconColor;
 
   DrawerTile(
-      {this.title,
+      {super.key, this.title,
       this.icon,
       this.onTap,
       this.isSelected = false,
@@ -22,11 +22,11 @@ class DrawerTile extends StatelessWidget {
         onTap: onTap,
         child: Container(
             height: 45,
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            margin: EdgeInsets.only(bottom: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.only(bottom: 6),
             decoration: BoxDecoration(
                 color: isSelected ? MaterialColors.active : Colors.transparent,
-                borderRadius: BorderRadius.all(Radius.circular(4))),
+                borderRadius: const BorderRadius.all(Radius.circular(4))),
             child: Row(
               children: [
                 Padding(

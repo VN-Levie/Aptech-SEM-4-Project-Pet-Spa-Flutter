@@ -34,7 +34,7 @@ class _SettingsState extends State<Settings> {
         appBar: Navbar(
           title: "Settings", tags: const [],
         ),
-        drawer: MaterialDrawer(currentPage: "Settings"),
+        drawer: const MaterialDrawer(currentPage: "Settings"),
         backgroundColor: MaterialColors.bgColorScreen,
         body: Container(
             child: SingleChildScrollView(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:project/constants/Theme.dart';
 
 class CardSquare extends StatelessWidget {
-  CardSquare(
-      {this.title = "Placeholder Title",
+  const CardSquare(
+      {super.key, this.title = "Placeholder Title",
       this.cta = "",
       this.img = "https://via.placeholder.com/200",
       this.tap = defaultFunc});
@@ -22,14 +22,14 @@ class CardSquare extends StatelessWidget {
     return Container(
         height: 250,
         width: null,
-        margin: EdgeInsets.only(top: 10),
+        margin: const EdgeInsets.only(top: 10),
         child: GestureDetector(
             onTap: tap,
             child: Stack(
               clipBehavior: Clip.hardEdge, children: [
                 Card(
                     elevation: 0.7,
-                    shape: RoundedRectangleBorder(
+                    shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(8.0))),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,11 +46,11 @@ class CardSquare extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(title,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: MaterialColors.caption,
                                           fontSize: 13)),
                                   Text(cta,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: MaterialColors.muted,
                                           fontSize: 11,
                                           fontWeight: FontWeight.w600))
@@ -60,11 +60,11 @@ class CardSquare extends StatelessWidget {
                       ],
                     )),
                 FractionalTranslation(
-                    translation: Offset(0, -0.05),
+                    translation: const Offset(0, -0.05),
                     child: Align(
                         alignment: Alignment.topCenter,
                         child: Container(
-                            padding: EdgeInsets.all(4.0),
+                            padding: const EdgeInsets.all(4.0),
                             height: 200,
                             width: MediaQuery.of(context).size.width * 0.85,
                             decoration: BoxDecoration(
@@ -73,10 +73,10 @@ class CardSquare extends StatelessWidget {
                                       color: Colors.black.withOpacity(0.06),
                                       spreadRadius: 2,
                                       blurRadius: 1,
-                                      offset: Offset(0, 0))
+                                      offset: const Offset(0, 0))
                                 ],
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(4.0)),
+                                    const BorderRadius.all(Radius.circular(4.0)),
                                 image: DecorationImage(
                                   image: NetworkImage(img),
                                   fit: BoxFit.cover,

@@ -8,9 +8,9 @@ class ProductCarousel extends StatefulWidget {
   final List<Map<String, String>> imgArray;
 
   const ProductCarousel({
-    Key? key,
+    super.key,
     required this.imgArray,
-  }) : super(key: key);
+  });
 
   @override
   _ProductCarouselState createState() => _ProductCarouselState();
@@ -29,7 +29,7 @@ class _ProductCarouselState extends State<ProductCarousel> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        decoration: BoxDecoration(boxShadow: [
+                        decoration: const BoxDecoration(boxShadow: [
                           BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.4), blurRadius: 8, spreadRadius: 0.3, offset: Offset(0, 3))
                         ]),
                         child: AspectRatio(
@@ -49,13 +49,13 @@ class _ProductCarouselState extends State<ProductCarousel> {
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Column(
                         children: [
-                          Text(item["price"] ?? "price", style: TextStyle(fontSize: 16, color: MaterialColors.caption)),
-                          Text(item["title"] ?? "title", style: TextStyle(fontSize: 32, color: Colors.black)),
+                          Text(item["price"] ?? "price", style: const TextStyle(fontSize: 16, color: MaterialColors.caption)),
+                          Text(item["title"] ?? "title", style: const TextStyle(fontSize: 32, color: Colors.black)),
                           Padding(
                             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8),
                             child: Text(
                               item["description"] ?? "description",
-                              style: TextStyle(fontSize: 16, color: MaterialColors.muted),
+                              style: const TextStyle(fontSize: 16, color: MaterialColors.muted),
                               textAlign: TextAlign.center,
                             ),
                           )

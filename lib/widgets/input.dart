@@ -18,28 +18,14 @@ class Input extends StatelessWidget {
   final bool outlineBorder;
   final Color cursorColor;
   final Color hintTextColor;
+  final bool isPassword;
 
-  Input(
-      {this.placeholder,
-      this.suffixIcon,
-      this.prefixIcon,
-      this.onTap,
-      this.filled,
-      this.fillColor,
-      this.textColor = Colors.black,
-      this.enabledBorderColor = MaterialColors.muted,
-      this.focusedBorderColor = MaterialColors.primary,
-      this.cursorColor = MaterialColors.muted,
-      this.hintTextColor = MaterialColors.muted,
-      this.onChanged,
-      this.outlineBorder = false,
-      this.autofocus = false,
-      this.borderColor = MaterialColors.border,
-      this.controller});
+  const Input({super.key, this.placeholder, this.suffixIcon, this.prefixIcon, this.onTap, this.filled, this.fillColor, this.textColor = Colors.black, this.enabledBorderColor = MaterialColors.muted, this.focusedBorderColor = MaterialColors.primary, this.cursorColor = MaterialColors.muted, this.hintTextColor = MaterialColors.muted, this.onChanged, this.outlineBorder = false, this.autofocus = false, this.borderColor = MaterialColors.border, this.controller, this.isPassword = false});
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+        obscureText: isPassword,
         cursorColor: cursorColor,
         onTap: onTap,
         onChanged: onChanged,
@@ -50,10 +36,9 @@ class Input extends StatelessWidget {
           fontSize: 14.0,
           color: textColor,
         ),
-        textAlignVertical: TextAlignVertical(y: 0.5),
+        textAlignVertical: const TextAlignVertical(y: 0.5),
         decoration: InputDecoration(
-            contentPadding:
-                EdgeInsets.only(left: 16, bottom: outlineBorder ? 20 : 16),
+            contentPadding: EdgeInsets.only(left: 16, bottom: outlineBorder ? 20 : 16),
             filled: filled,
             fillColor: fillColor,
             hintStyle: TextStyle(
@@ -61,16 +46,8 @@ class Input extends StatelessWidget {
             ),
             suffixIcon: suffixIcon,
             prefixIcon: prefixIcon,
-            enabledBorder: outlineBorder
-                ? OutlineInputBorder(
-                    borderSide: BorderSide(color: enabledBorderColor))
-                : UnderlineInputBorder(
-                    borderSide: BorderSide(color: enabledBorderColor)),
-            focusedBorder: outlineBorder
-                ? OutlineInputBorder(
-                    borderSide: BorderSide(color: focusedBorderColor))
-                : UnderlineInputBorder(
-                    borderSide: BorderSide(color: focusedBorderColor)),
+            enabledBorder: outlineBorder ? OutlineInputBorder(borderSide: BorderSide(color: enabledBorderColor)) : UnderlineInputBorder(borderSide: BorderSide(color: enabledBorderColor)),
+            focusedBorder: outlineBorder ? OutlineInputBorder(borderSide: BorderSide(color: focusedBorderColor)) : UnderlineInputBorder(borderSide: BorderSide(color: focusedBorderColor)),
             hintText: placeholder));
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../auth/login_screen.dart';
+import '../../screens/auth/login_screen.dart';
 import 'package:project/widgets/drawer.dart';
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -47,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (lastPressed == null || now.difference(lastPressed!) > exitWarningDuration) {
           lastPressed = now;
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Press back again to exit the app'),
               duration: exitWarningDuration,
             ),
@@ -59,10 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Home'),
+          title: const Text('Home'),
         ),
-        drawer: MaterialDrawer(currentPage: "Home"),
-        body: Center(
+        drawer: const MaterialDrawer(currentPage: "Home"),
+        body: const Center(
           child: Text('Welcome to the SPA PET app!'),
         ),
       ),

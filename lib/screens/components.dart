@@ -101,7 +101,7 @@ class _ComponentsState extends State<Components> {
           title: "Elements",
         ),
         backgroundColor: MaterialColors.bgColorScreen,
-        drawer: MaterialDrawer(currentPage: "Components"),
+        drawer: const MaterialDrawer(currentPage: "Components"),
         body: SingleChildScrollView(
             child: Padding(
           padding: const EdgeInsets.only(right: 24, left: 24, bottom: 36),
@@ -269,12 +269,12 @@ class _ComponentsState extends State<Components> {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(4.0),
     ),
-    padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 12, bottom: 12),
+    padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12, bottom: 12),
   ),
   onPressed: () {
     Navigator.pushReplacementNamed(context, '/home');
   },
-  child: Text(
+  child: const Text(
     "ERROR",
     style: TextStyle(
       fontWeight: FontWeight.w600,

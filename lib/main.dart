@@ -5,15 +5,19 @@ import 'package:project/screens/onboarding.dart';
 import 'package:project/screens/pro.dart';
 import 'package:project/screens/profile.dart';
 import 'package:project/screens/settings.dart';
-import 'pages/auth/login_screen.dart';
-import 'pages/auth/register_screen.dart';  // Thêm dòng này
+import 'package:project/screens/spa_booking/booking_history.dart';
+import 'package:project/screens/spa_booking/spa_booking.dart';
+import 'screens/auth/login_screen.dart';
+import 'screens/auth/register_screen.dart'; // Thêm dòng này
 import 'pages/home/home_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,16 +27,18 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/onboarding',
       routes: {
-        '/': (context) => Home(),
-        '/login': (context) => LoginScreen(),
-        '/home': (context) => HomeScreen(),
-        '/register': (context) => RegisterScreen(), 
-        '/test_home': (context) => Home(),  
-        '/component': (context) => Components(),  
-        '/onboarding': (context) => Onboarding(),  
-        '/pro': (context) => Pro(),  
-        '/profile': (context) => Profile(),  
-        '/settings': (context) => Settings(),  
+        '/': (context) => const Home(),
+        '/login': (context) => const LoginScreen(),
+        '/home': (context) => const Home(),
+        '/register': (context) => const RegisterScreen(),
+        '/test_home': (context) => const Home(),
+        '/component': (context) => const Components(),
+        '/onboarding': (context) => const Onboarding(),
+        '/pro': (context) => const Pro(),
+        '/profile': (context) => const Profile(),
+        '/settings': (context) => const Settings(),
+        '/booking': (context) => SpaBooking(),
+        '/booking_history': (context) => const BookingHistoryScreen(),
       },
     );
   }

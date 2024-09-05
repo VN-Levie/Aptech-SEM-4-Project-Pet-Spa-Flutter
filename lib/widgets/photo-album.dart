@@ -4,13 +4,13 @@ import 'package:project/constants/Theme.dart';
 class PhotoAlbum extends StatelessWidget {
   final List<String> imgArray;
 
-  PhotoAlbum({required this.imgArray});
+  const PhotoAlbum({super.key, required this.imgArray});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
+        const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
@@ -30,7 +30,7 @@ class PhotoAlbum extends StatelessWidget {
           height: 250,
           child: GridView.count(
               primary: false,
-              padding: EdgeInsets.symmetric(vertical: 15.0),
+              padding: const EdgeInsets.symmetric(vertical: 15.0),
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               crossAxisCount: 3,
@@ -38,7 +38,7 @@ class PhotoAlbum extends StatelessWidget {
                   .map((item) => Container(
                       height: 100,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                           image: DecorationImage(
                               image: NetworkImage(item), fit: BoxFit.cover))))
                   .toList()),

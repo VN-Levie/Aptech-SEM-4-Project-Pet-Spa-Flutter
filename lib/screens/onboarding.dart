@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:project/constants/Theme.dart';
 
 class Onboarding extends StatelessWidget {
+  const Onboarding({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +21,7 @@ class Onboarding extends StatelessWidget {
           ),
           // Lớp phủ màu trắng mờ
           Container(
-            color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.3),
+            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.3),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 50, left: 32, right: 32, bottom: 16),
