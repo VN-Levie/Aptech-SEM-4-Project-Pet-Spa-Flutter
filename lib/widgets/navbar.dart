@@ -1,216 +1,208 @@
 import 'package:flutter/material.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:get/get.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:project/constants/Theme.dart';
+import 'package:project/core/app_controller.dart'; // Import AppController
 
-// import 'package:project/screens/categories.dart';
-// import 'package:project/screens/best-deals.dart';
-// import 'package:project/screens/search.dart';
-// import 'package:project/screens/cart.dart';
-// import 'package:project/screens/chat.dart';
+class Navbar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final String categoryOne;
+  final String categoryTwo;
+  final bool searchBar;
+  final bool backButton;
+  final bool transparent;
+  final bool rightOptions;
+  final List<String>? tags;
+  final Function? getCurrentPage;
+  final bool isOnSearch;
+  final TextEditingController? searchController;
+  final Function(String)? searchOnSubmitted;
+  final bool searchAutofocus;
+  final bool noShadow;
+  final Color bgColor;
+  final bool isLoading;
 
-import 'package:project/widgets/input.dart';
+  Navbar({
+    super.key,
+    this.title = "Home",
+    this.categoryOne = "",
+    this.categoryTwo = "",
+    this.tags,
+    this.transparent = false,
+    this.rightOptions = true,
+    this.getCurrentPage,
+    this.searchController,
+    this.isOnSearch = false,
+    this.searchOnSubmitted,
+    this.searchAutofocus = false,
+    this.backButton = false,
+    this.noShadow = false,
+    this.bgColor = Colors.white,
+    this.searchBar = false,
+    this.isLoading = false,
+  });
 
-class Navbar extends StatefulWidget implements PreferredSizeWidget {
-  late String title;
-  late String categoryOne;
-  late String categoryTwo;
-  late bool searchBar;
-  late bool backButton;
-  late bool transparent;
-  late bool rightOptions;
-  late List<String>? tags;
-  late Function? getCurrentPage;
-  late bool isOnSearch;
-  late TextEditingController? searchController;
-  late Function? searchOnChanged;
-  late bool searchAutofocus;
-  late bool noShadow;
-  late Color bgColor;
-
-  Navbar({super.key, this.title = "Home", this.categoryOne = "", this.categoryTwo = "", this.tags, this.transparent = false, this.rightOptions = true, this.getCurrentPage, this.searchController, this.isOnSearch = false, this.searchOnChanged, this.searchAutofocus = false, this.backButton = false, this.noShadow = false, this.bgColor = Colors.white, this.searchBar = false});
-
-  final double _prefferedHeight = 180.0;
+  final double _preferredHeight = 180.0;
 
   @override
-  _NavbarState createState() => _NavbarState();
-
-  @override
-  Size get preferredSize => Size.fromHeight(_prefferedHeight);
-}
-
-class _NavbarState extends State<Navbar> {
-  late String activeTag;
-
-  final ItemScrollController _scrollController = ItemScrollController();
-
-  @override
-  void initState() {
-    if (widget.tags != null && widget.tags?.length != 0) {
-      activeTag = widget.tags![0];
-    }
-    super.initState();
-  }
+  Size get preferredSize => Size.fromHeight(_preferredHeight);
 
   @override
   Widget build(BuildContext context) {
-    late bool categories = widget.categoryOne.isNotEmpty && widget.categoryTwo.isNotEmpty;
-    late bool tagsExist = widget.tags == null ? false : (widget.tags?.length == 0 ? false : true);
+    // Lấy AppController
+    final AppController appController = Get.put(AppController());
+    // final AppController appController = Get.lazyPut(()=>AppController());
 
     return Container(
-        height: widget.searchBar ? (!categories ? (tagsExist ? 211.0 : 178.0) : (tagsExist ? 262.0 : 210.0)) : (!categories ? (tagsExist ? 132.0 : 102.0) : (tagsExist ? 200.0 : 150.0)),
-        decoration: BoxDecoration(color: !widget.transparent ? widget.bgColor : Colors.transparent, boxShadow: [
-          BoxShadow(color: !widget.transparent && !widget.noShadow ? Colors.black.withOpacity(0.6) : Colors.transparent, spreadRadius: -10, blurRadius: 12, offset: const Offset(0, 5))
-        ]),
-        child: SafeArea(
-          bottom: false,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+      height: searchBar ? (!categoryOne.isNotEmpty || !categoryTwo.isNotEmpty ? (tags != null && tags!.isNotEmpty ? 211.0 : 178.0) : (tags != null && tags!.isNotEmpty ? 262.0 : 210.0)) : (!categoryOne.isNotEmpty || !categoryTwo.isNotEmpty ? (tags != null && tags!.isNotEmpty ? 132.0 : 102.0) : (tags != null && tags!.isNotEmpty ? 200.0 : 150.0)),
+      decoration: BoxDecoration(
+        color: !transparent ? bgColor : Colors.transparent,
+        boxShadow: [
+          if (!transparent && !noShadow)
+            BoxShadow(
+              color: Colors.black.withOpacity(0.4),
+              spreadRadius: -10,
+              blurRadius: 12,
+              offset: const Offset(0, 5),
+            ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          SafeArea(
+            bottom: false,
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Column(
                   children: [
-                    Row(
-                      children: [
-                        IconButton(
-                            icon: Icon(!widget.backButton ? Icons.menu : Icons.arrow_back_ios, color: !widget.transparent ? (widget.bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white, size: 24.0),
-                            onPressed: () {
-                              if (!widget.backButton) {
-                                Scaffold.of(context).openDrawer();
-                              } else {
-                                Navigator.pop(context);
-                              }
-                            }),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(widget.title, style: TextStyle(color: !widget.transparent ? (widget.bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white, fontWeight: FontWeight.w600, fontSize: 18.0)),
-                        ),
-                      ],
-                    ),
-                    if (widget.rightOptions)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => Chat()));
-                            },
-                            child: IconButton(icon: Icon(Icons.chat_bubble_outline, color: !widget.transparent ? (widget.bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white, size: 22.0), onPressed: null),
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  !backButton ? Icons.menu : Icons.arrow_back_ios,
+                                  color: !transparent ? (bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white,
+                                  size: 28.0,
+                                ),
+                                onPressed: () {
+                                  if (!backButton) {
+                                    Scaffold.of(context).openDrawer();
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                title,
+                                style: TextStyle(
+                                  color: !transparent ? (bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 22.0,
+                                ),
+                              ),
+                            ],
                           ),
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.push(
-                              //     context,
-                              //     MaterialPageRoute(
-                              //         builder: (context) => Cart()));
-                            },
-                            child: IconButton(icon: Icon(Icons.add_shopping_cart, color: !widget.transparent ? (widget.bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white, size: 22.0), onPressed: null),
-                          ),
+                          if (rightOptions)
+                            Row(
+                              children: [
+                                // Chat icon with GetX badge
+                                Obx(() => badges.Badge(
+                                      badgeContent: Text(
+                                        appController.unreadMessages.value.toString(),
+                                        style: const TextStyle(color: Colors.white, fontSize: 10),
+                                      ),
+                                      showBadge: appController.unreadMessages.value > 0,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.chat_bubble_outline,
+                                          color: !transparent ? (bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white,
+                                          size: 24.0,
+                                        ),
+                                        onPressed: () {
+                                          // Xử lý sự kiện bấm nút chat
+                                        },
+                                      ),
+                                    )),
+                                const SizedBox(width: 10),
+                                // Cart icon with GetX badge
+                                Obx(() => badges.Badge(
+                                      badgeContent: Text(
+                                        appController.cartItems.value.toString(),
+                                        style: const TextStyle(color: Colors.white, fontSize: 10),
+                                      ),
+                                      showBadge: appController.cartItems.value > 0,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.shopping_cart_outlined,
+                                          color: !transparent ? (bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white,
+                                          size: 24.0,
+                                        ),
+                                        onPressed: () {
+                                          // Xử lý sự kiện bấm nút giỏ hàng
+                                        },
+                                      ),
+                                    )),
+                              ],
+                            ),
                         ],
-                      )
+                      ),
+                    ),
+                    if (searchBar) const SizedBox(height: 10),
+                    // Search Bar
+                    if (searchBar)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 5, bottom: 12), // Reduced top padding to lower the search bar
+                        child: TextField(
+                          controller: searchController,
+                          onSubmitted: searchOnSubmitted,
+                          autofocus: searchAutofocus,
+                          decoration: InputDecoration(
+                            hintText: 'Search products...',
+                            prefixIcon: const Icon(Icons.search),
+                            suffixIcon: searchController != null && searchController?.text.isNotEmpty == true
+                                ? IconButton(
+                                    icon: const Icon(Icons.clear),
+                                    onPressed: () {
+                                      searchController?.clear();
+                                      searchOnSubmitted?.call("");
+                                    },
+                                  )
+                                : null,
+                            filled: true,
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide(color: Colors.grey.shade400),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: const BorderSide(color: MaterialColors.primary),
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
-                if (widget.searchBar)
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 4, left: 15, right: 15),
-                    child: Input(
-                        placeholder: "What are you looking for?",
-                        controller: widget.searchController ?? TextEditingController(),
-                        onChanged: widget.searchOnChanged as void Function(String)? ?? (String value) {},
-                        autofocus: widget.searchAutofocus,
-                        outlineBorder: true,
-                        enabledBorderColor: Colors.black.withOpacity(0.2),
-                        focusedBorderColor: MaterialColors.muted,
-                        suffixIcon: const Icon(Icons.zoom_in, color: MaterialColors.muted),
-                        onTap: () {
-                          // if (!widget.isOnSearch)
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => Search()));
-                        }),
-                  ),
-                SizedBox(
-                  height: tagsExist ? 0 : 10,
-                ),
-                if (categories)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => Categories()));
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(Icons.border_all, color: Colors.black87, size: 22.0),
-                            const SizedBox(width: 10),
-                            Text(widget.categoryOne, style: const TextStyle(color: Colors.black87, fontSize: 16.0)),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 30),
-                      Container(
-                        color: MaterialColors.muted,
-                        height: 25,
-                        width: 0.3,
-                      ),
-                      const SizedBox(width: 30),
-                      GestureDetector(
-                        onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => BestDeals()));
-                        },
-                        child: Row(
-                          children: [
-                            const Icon(Icons.camera_enhance, color: Colors.black87, size: 22.0),
-                            const SizedBox(width: 10),
-                            Text(widget.categoryTwo, style: const TextStyle(color: Colors.black87, fontSize: 16.0)),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                if (tagsExist)
-                  SizedBox(
-                    height: 40,
-                    child: ScrollablePositionedList.builder(
-                      itemScrollController: _scrollController,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.tags!.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () {
-                            if (activeTag != widget.tags?[index]) {
-                              setState(() => activeTag = widget.tags![index]);
-                              _scrollController.scrollTo(index: index == widget.tags!.length - 1 ? 1 : 0, duration: const Duration(milliseconds: 420), curve: Curves.easeIn);
-                              if (widget.getCurrentPage != null) widget.getCurrentPage!(activeTag);
-                            }
-                          },
-                          child: Container(
-                              margin: EdgeInsets.only(left: index == 0 ? 46 : 8, right: 8),
-                              padding: const EdgeInsets.only(left: 20, right: 20),
-                              decoration: BoxDecoration(border: Border(bottom: BorderSide(width: 2.0, color: activeTag == widget.tags?[index] ? MaterialColors.primary : Colors.transparent))),
-                              child: Center(
-                                child: Text(widget.tags![index], style: TextStyle(color: activeTag == widget.tags?[index] ? MaterialColors.primary : MaterialColors.placeholder, fontWeight: FontWeight.w500, fontSize: 14.0)),
-                              )),
-                        );
-                      },
-                    ),
-                  )
-              ],
+              ),
             ),
           ),
-        ));
+          if (isLoading)
+            const Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: LinearProgressIndicator(),
+            ),
+        ],
+      ),
+    );
   }
 }

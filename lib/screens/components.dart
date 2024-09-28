@@ -263,26 +263,25 @@ class _ComponentsState extends State<Components> {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 34.0, right: 34.0, top: 8),
                   child: ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    foregroundColor: Colors.white,
-    backgroundColor: MaterialColors.error,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(4.0),
-    ),
-    padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12, bottom: 12),
-  ),
-  onPressed: () {
-    Navigator.pushReplacementNamed(context, '/home');
-  },
-  child: const Text(
-    "ERROR",
-    style: TextStyle(
-      fontWeight: FontWeight.w600,
-      fontSize: 16.0,
-    ),
-  ),
-),
-
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: MaterialColors.error,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 12, bottom: 12),
+                    ),
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/home');
+                    },
+                    child: const Text(
+                      "ERROR",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16.0,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               const Padding(
@@ -412,11 +411,11 @@ class _ComponentsState extends State<Components> {
                 child: Input(
                   placeholder: "outline border",
                   outlineBorder: true,
-                  borderColor: MaterialColors.muted,
-                  focusedBorderColor: MaterialColors.muted,
-                  enabledBorderColor: MaterialColors.muted,
-                  textColor: MaterialColors.muted,
-                  hintTextColor: MaterialColors.muted,
+                  borderColor: MaterialColors.error,
+                  focusedBorderColor: MaterialColors.error,
+                  enabledBorderColor: MaterialColors.error,
+                  textColor: MaterialColors.error,
+                  hintTextColor: MaterialColors.error,
                 ),
               ),
               const Padding(
@@ -614,7 +613,7 @@ class _ComponentsState extends State<Components> {
                   child: Text("Album", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 16)),
                 ),
               ),
-              PhotoAlbum(imgArray: albumArray),
+              //PhotoAlbum(imgArray: albumArray),
               const Padding(
                 padding: EdgeInsets.only(left: 8.0, top: 32, bottom: 32),
                 child: Align(

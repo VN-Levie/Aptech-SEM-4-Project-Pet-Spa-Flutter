@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:project/constants/Theme.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CardHorizontal extends StatelessWidget {
-  const CardHorizontal(
-      {super.key, this.title = "Placeholder Title",
-      this.cta = "",
-      this.img = "https://via.placeholder.com/200",
-      this.tap = defaultFunc});
+  const CardHorizontal({super.key, this.title = "Placeholder Title", this.cta = "", this.img = "https://via.placeholder.com/200?Text=CardHorizontal", this.tap = defaultFunc});
 
   final String cta;
   final String img;
@@ -27,8 +25,7 @@ class CardHorizontal extends StatelessWidget {
           child: Stack(clipBehavior: Clip.hardEdge, children: [
             Card(
               elevation: 0.7,
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(6.0))),
+              shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(6.0))),
               child: Row(
                 children: [
                   Flexible(flex: 1, child: Container()),
@@ -40,15 +37,8 @@ class CardHorizontal extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(title,
-                                style: const TextStyle(
-                                    color: MaterialColors.caption,
-                                    fontSize: 13)),
-                            Text(cta,
-                                style: const TextStyle(
-                                    color: MaterialColors.muted,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600))
+                            Text(title, style: const TextStyle(color: MaterialColors.caption, fontSize: 13)),
+                            Text(cta, style: const TextStyle(color: MaterialColors.muted, fontSize: 11, fontWeight: FontWeight.w600))
                           ],
                         ),
                       ))
@@ -63,17 +53,22 @@ class CardHorizontal extends StatelessWidget {
                     padding: const EdgeInsets.all(4.0),
                     height: MediaQuery.of(context).size.height / 2,
                     width: 165,
-                    decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.06),
-                              spreadRadius: 2,
-                              blurRadius: 1,
-                              offset: const Offset(0, 0))
-                        ],
-                        borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                        image: DecorationImage(
-                            image: NetworkImage(img), fit: BoxFit.cover))),
+                    decoration: BoxDecoration(boxShadow: [
+                      BoxShadow(color: Colors.black.withOpacity(0.06), spreadRadius: 2, blurRadius: 1, offset: const Offset(0, 0))
+                    ], borderRadius: const BorderRadius.all(Radius.circular(4.0))),
+                    child: CachedNetworkImage(
+                      imageUrl: img,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          width: double.infinity,
+                          color: Colors.white,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.error),
+                    )),
               ),
             ),
           ]),

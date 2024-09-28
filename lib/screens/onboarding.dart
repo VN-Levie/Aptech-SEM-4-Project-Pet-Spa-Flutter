@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project/constants/Theme.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
+
+  Future<void> _setFirstTimeFalse(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isFirstTime', false); // Đặt cờ isFirstTime thành false
+    Navigator.pushReplacementNamed(context, '/home'); // Chuyển hướng đến màn hình Home
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +169,7 @@ class Onboarding extends StatelessWidget {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/home');
+                          _setFirstTimeFalse(context); // Đặt cờ isFirstTime và chuyển hướng
                         },
                         child: const Text(
                           "GET STARTED",

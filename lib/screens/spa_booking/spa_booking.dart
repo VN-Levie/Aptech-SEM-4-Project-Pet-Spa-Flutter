@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'service_selection.dart';
-import '../../core/database/database_helper.dart';
+import '../../core/database_helper.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/drawer.dart';
 import 'package:project/constants/Theme.dart';

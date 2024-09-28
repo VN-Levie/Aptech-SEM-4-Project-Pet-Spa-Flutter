@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "674239811909",
+    "project_id": "pet-spa-f06f9",
+    "storage_bucket": "pet-spa-f06f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674239811909:android:54297c0ced7fc727762e2c",
+        "android_client_info": {
+          "package_name": "com.petspa.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674239811909-m2eeg61cbpnmr7q69n522ajndm7lkqhu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL9j65WDO-7oP-vOMGXfLDNV05WqzAkUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674239811909-m2eeg61cbpnmr7q69n522ajndm7lkqhu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart'; // Thêm import cho cached_network_image
 
 import 'package:project/constants/Theme.dart';
+import 'package:shimmer/shimmer.dart';
 
 class ProductCarousel extends StatefulWidget {
   final List<Map<String, String>> imgArray;
@@ -35,10 +37,19 @@ class _ProductCarouselState extends State<ProductCarousel> {
                           aspectRatio: 2 / 2,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(4),
-                            child: Image.network(
-                              item["img"] ?? "",
+                            child: CachedNetworkImage(
+                              imageUrl: item["img"] ?? "",
                               fit: BoxFit.cover,
                               alignment: Alignment.topCenter,
+                              placeholder: (context, url) => Shimmer.fromColors(
+                                baseColor: MaterialColors.primary.withOpacity(0.8),
+                                highlightColor: MaterialColors.primary.withOpacity(0.5),
+                                child: Container(
+                                  width: double.infinity,
+                                  color: MaterialColors.placeholder,
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => const Icon(Icons.error),
                             ),
                           ),
                         ),
@@ -48,7 +59,6 @@ class _ProductCarouselState extends State<ProductCarousel> {
                       padding: const EdgeInsets.only(top: 16.0),
                       child: Column(
                         children: [
-                          Text(item["price"] ?? "price", style: const TextStyle(fontSize: 16, color: MaterialColors.caption)),
                           Text(item["title"] ?? "title", style: const TextStyle(fontSize: 32, color: Colors.black)),
                           Padding(
                             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8),
@@ -67,12 +77,12 @@ class _ProductCarouselState extends State<ProductCarousel> {
           .toList(),
       options: CarouselOptions(
           height: 530,
-          autoPlay: false,
+          autoPlay: true,
           enlargeCenterPage: false,
           aspectRatio: 4 / 4,
-          enableInfiniteScroll: false,
+          enableInfiniteScroll: true,
+          autoPlayInterval: const Duration(seconds: 3),
           initialPage: 0,
-          // viewportFraction: 1.0,
           onPageChanged: (index, reason) {
             setState(() {
               _current = index;
