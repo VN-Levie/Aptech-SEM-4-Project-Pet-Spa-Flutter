@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../../core/database_helper.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/drawer.dart';
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 
 class BookingHistoryScreen extends StatefulWidget {
   const BookingHistoryScreen({super.key});
@@ -50,7 +50,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Navbar(
+      appBar: const Navbar(
         title: "Booking History",
       ),
       backgroundColor: MaterialColors.bgColorScreen,

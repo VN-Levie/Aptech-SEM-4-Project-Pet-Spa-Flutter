@@ -10,7 +10,7 @@ class ProductCard extends StatelessWidget {
   final String sellerName; // Thêm thông tin người bán
   final String sellerImage; // Thêm ảnh người bán
 
-  ProductCard({
+  const ProductCard({super.key, 
     required this.name,
     required this.price,
     required this.onAddToCart,

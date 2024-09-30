@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 
 class Pro extends StatelessWidget {
   const Pro({super.key});

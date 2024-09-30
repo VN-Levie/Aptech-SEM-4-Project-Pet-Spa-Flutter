@@ -6,7 +6,7 @@ import 'product_card.dart';
 import 'dart:async';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/drawer.dart';
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 
 class PetShopScreen extends StatefulWidget {
   const PetShopScreen({super.key});
@@ -27,7 +27,7 @@ class _PetShopScreenState extends State<PetShopScreen> {
   bool hasMore = true;
   int offset = 0;
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -179,7 +179,7 @@ class _PetShopScreenState extends State<PetShopScreen> {
         searchOnSubmitted: _onSearchSubmitted,
       ),
       backgroundColor: MaterialColors.bgColorScreen,
-      drawer: const MaterialDrawer(currentPage: "pet_shop"),
+      drawer: const MaterialDrawer(currentPage: "/pet_shop"),
       body: Column(
         children: [
           Padding(

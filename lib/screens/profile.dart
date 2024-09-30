@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 
 //widgets
 import 'package:project/widgets/navbar.dart';
@@ -22,7 +22,7 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: Navbar(
+        appBar: const Navbar(
           title: "Profile",
           transparent: true,
         ),

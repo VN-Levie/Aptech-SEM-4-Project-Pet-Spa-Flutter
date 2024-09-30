@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 
 class PhotoAlbum extends StatelessWidget {
   final List<String> imgArray;

@@ -3,7 +3,7 @@ import 'service_selection.dart';
 import '../../core/database_helper.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/drawer.dart';
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 class SpaBooking extends StatefulWidget {
   const SpaBooking({super.key});
 
@@ -31,7 +31,7 @@ class _SpaBookingState extends State<SpaBooking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(     
-      appBar: Navbar(
+      appBar: const Navbar(
         title: "Spa Booking",
       ),
       backgroundColor: MaterialColors.bgColorScreen,

@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:project/core/rest_service.dart';
 import 'package:project/screens/auth/login_screen.dart';
+import 'package:project/screens/onboarding_screen.dart';
+import 'package:project/widgets/card-square.dart';
+import 'package:project/widgets/utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/card-horizontal.dart';
 import 'package:project/widgets/card-small.dart';
 import 'package:project/widgets/drawer.dart';
 import 'package:project/widgets/slider-product.dart';
+import 'dart:convert';
 
 final Map<String, Map<String, String>> homeCards = {
   "Ice Cream": {
@@ -53,16 +59,18 @@ List<Map<String, String>> imgArray = [
   },
 ];
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  _HomeState createState() => _HomeState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeScreenState extends State<HomeScreen> {
+  bool _isLoading = true;
   @override
   void initState() {
+    _isLoading = true;
     super.initState();
     _checkLoginStatus(); // Kiểm tra trạng thái đăng nhập khi khởi động màn hình
   }
@@ -70,24 +78,101 @@ class _HomeState extends State<Home> {
   // Kiểm tra trạng thái đăng nhập dựa trên JWT token
   void _checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('jwt_token'); // Lấy JWT token từ SharedPreferences
+    //check is first time open app
+    bool isFirstTime = prefs.getBool('first_time') ?? true;
+    if (isFirstTime) {
+      Utils.navigateTo(context, const OnboardingScreen());
+      return;
+    }
+    FlutterSecureStorage storage = FlutterSecureStorage();
+    String? token = await storage.read(key: 'jwt_token');
 
     // Nếu token không tồn tại hoặc rỗng, chuyển hướng đến màn hình đăng nhập
-    if (token == null || token.isEmpty) {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => const LoginScreen()),
-      // );
+    if (token != null && token.isNotEmpty) {
+      try {
+        String url = '/verify-token?token=$token';
+        var response = await RestService.get(url);
+        print('response: ${response.body}');
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
+          var authData = jsonResponse['data'];
+
+          // Trích xuất JWT từ AuthData
+          String token = authData['jwt'];
+          var account = authData['account'];
+          
+          await prefs.setString('jwt_token', token);
+          await prefs.setString('account', jsonEncode(account));
+          Utils.noti("Welcome back!");
+          Utils.navigateTo(context, const HomeScreen());
+        } else if (response.statusCode == 400) {
+          //trường hợp tk không tồn tại nữa
+          //xóa jwt token
+          await storage.delete(key: 'jwt_token');
+          Utils.noti("Token expired. Please login again");
+          Utils.navigateTo(context, const LoginScreen());
+        } else if (response.statusCode == 401) {
+          String? refreshToken = await storage.read(key: 'refresh_token');
+          if (refreshToken == null) {
+            Utils.noti("Token expired. Please login again!");
+            Utils.navigateTo(context, const LoginScreen());
+          }
+          //lấy refresh token
+          var response = await RestService.post('/api/auth/refresh-token', {
+            'refresh_token': refreshToken,
+          });
+          if (response.statusCode == 200) {
+            var jsonResponse = jsonDecode(response.body);
+            var authData = jsonResponse['data'];
+
+            // Trích xuất JWT từ AuthData
+            String token = authData['jwt'];
+            var account = authData['account'];
+
+            // Lưu token vào SecureStorage
+
+            await prefs.setString('account', jsonEncode(account));
+            await storage.write(key: 'jwt_token', value: token);
+            Utils.noti("Welcome back!");
+            Utils.navigateTo(context, const HomeScreen());
+          } else {
+            Utils.noti("Token expired. Please login again.!");
+            Utils.navigateTo(context, const LoginScreen());
+          }
+        } else {
+          var jsonResponse = jsonDecode(response.body)['message'];
+
+          Utils.noti("Login failed: $jsonResponse");
+        }
+      } catch (e) {
+        print(e);
+        // Utils.noti("Something went wrong. Please try again later.");
+        Utils.noti("Token expired. Please login again...");
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Scaffold(
-      appBar: Navbar(
+      appBar: const Navbar(
         title: "Pet Spa",
       ),
-      drawer: const MaterialDrawer(currentPage: "Home"),
+      drawer: const MaterialDrawer(currentPage: "/home"),
       body: Container(
         padding: const EdgeInsets.only(left: 16.0, right: 16.0),
         child: SingleChildScrollView(
@@ -125,25 +210,25 @@ class _HomeState extends State<Home> {
                       })
                 ],
               ),
-              // const SizedBox(height: 8.0),
-              // CardHorizontal(
-              //     cta: "View article",
-              //     title: homeCards["Fashion"]?['title'] ?? "Fashion Title",
-              //     img: homeCards["Fashion"]?['image'] ?? "https://via.placeholder.com/200?text=Fashion",
-              //     tap: () {
-              //       Navigator.pushReplacementNamed(context, '/pro');
-              //     }),
-              // const SizedBox(height: 8.0),
-              // Padding(
-              //   padding: const EdgeInsets.only(bottom: 32.0),
-              //   child: CardSquare(
-              //       cta: "View article",
-              //       title: homeCards["Argon"]?['title'] ?? "Argon Title",
-              //       img: homeCards["Argon"]?['image'] ?? "https://via.placeholder.com/200?text=Argon",
-              //       tap: () {
-              //         Navigator.pushReplacementNamed(context, '/pro');
-              //       }),
-              // )
+              const SizedBox(height: 8.0),
+              CardHorizontal(
+                  cta: "View article",
+                  title: homeCards["Fashion"]?['title'] ?? "Fashion Title",
+                  img: homeCards["Fashion"]?['image'] ?? "https://via.placeholder.com/200?text=Fashion",
+                  tap: () {
+                    Navigator.pushReplacementNamed(context, '/pro');
+                  }),
+              const SizedBox(height: 8.0),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 32.0),
+                child: CardSquare(
+                    cta: "View article",
+                    title: homeCards["Argon"]?['title'] ?? "Argon Title",
+                    img: homeCards["Argon"]?['image'] ?? "https://via.placeholder.com/200?text=Argon",
+                    tap: () {
+                      Navigator.pushReplacementNamed(context, '/pro');
+                    }),
+              )
             ],
           ),
         ),

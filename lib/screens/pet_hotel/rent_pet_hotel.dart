@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:project/core/rest_service.dart';
+import 'package:project/widgets/drawer.dart';
 import 'dart:convert';
+
+import 'package:project/widgets/navbar.dart';
 
 class RentPetHotel extends StatefulWidget {
   const RentPetHotel({super.key});
@@ -13,7 +17,7 @@ class RentPetHotel extends StatefulWidget {
 class _RentPetHotelState extends State<RentPetHotel> {
   final _petNameController = TextEditingController();
   final _locationController = TextEditingController(); // Controller cho địa chỉ vị trí
-  String _azureMapsApiKey = 'YOUR_AZURE_MAPS_API_KEY';  // Thay bằng Azure Maps API key của bạn
+  final String _azureMapsApiKey = 'YOUR_AZURE_MAPS_API_KEY'; // Thay bằng Azure Maps API key của bạn
 
   // Lấy vị trí hiện tại
   Future<void> _getCurrentLocation() async {
@@ -38,10 +42,10 @@ class _RentPetHotelState extends State<RentPetHotel> {
 
   // Chuyển đổi từ lat, lon thành địa chỉ thông qua Azure Maps API
   Future<void> _getAddressFromLatLng(double latitude, double longitude) async {
-    String url =
-        'https://atlas.microsoft.com/search/address/reverse/json?subscription-key=$_azureMapsApiKey&api-version=1.0&query=$latitude,$longitude';
+    String url = 'https://atlas.microsoft.com/search/address/reverse/json?subscription-key=$_azureMapsApiKey&api-version=1.0&query=$latitude,$longitude';
 
-    final response = await http.get(Uri.parse(url));
+    // final response = await http.get(Uri.parse(url));
+    final response = await RestService.get(url);
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -60,9 +64,10 @@ class _RentPetHotelState extends State<RentPetHotel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Rent Pet Hotel"),
+      appBar: const Navbar(
+        title: "Rent Pet Hotel",
       ),
+      drawer: const MaterialDrawer(currentPage: "hotel"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

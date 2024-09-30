@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 
 //widgets
 import 'package:project/widgets/navbar.dart';
@@ -31,8 +31,8 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Navbar(
-          title: "Settings", tags: const [],
+        appBar: const Navbar(
+          title: "Settings", tags: [],
         ),
         drawer: const MaterialDrawer(currentPage: "Settings"),
         backgroundColor: MaterialColors.bgColorScreen,

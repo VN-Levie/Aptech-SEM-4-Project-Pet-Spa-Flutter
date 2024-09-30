@@ -3,7 +3,7 @@ import '../../core/database_helper.dart';
 import 'pet_info.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/drawer.dart';
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 
 class ServiceSelection extends StatefulWidget {
   final int categoryId;
@@ -33,7 +33,7 @@ class _ServiceSelectionState extends State<ServiceSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Navbar(
+      appBar: const Navbar(
         title: "Select Service",
       ),
       backgroundColor: MaterialColors.bgColorScreen,

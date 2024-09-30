@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //widgets
@@ -12,7 +12,6 @@ import 'package:project/widgets/card-category.dart';
 import 'package:project/widgets/card-small.dart';
 import 'package:project/widgets/card-square.dart';
 import 'package:project/widgets/slider-product.dart';
-import 'package:project/widgets/photo-album.dart';
 
 import 'package:project/widgets/table-cell.dart';
 
@@ -97,7 +96,7 @@ class _ComponentsState extends State<Components> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: Navbar(
+        appBar: const Navbar(
           title: "Elements",
         ),
         backgroundColor: MaterialColors.bgColorScreen,
@@ -467,16 +466,16 @@ class _ComponentsState extends State<Components> {
                   child: Text("Navigation", style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 16)),
                 ),
               ),
-              Navbar(
+              const Navbar(
                 title: "Regular",
                 backButton: true,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Navbar(title: "Custom background", backButton: true, bgColor: MaterialColors.primary),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Navbar(
                   title: "Categories",
                   searchBar: true,
@@ -485,8 +484,8 @@ class _ComponentsState extends State<Components> {
                   backButton: true,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(top: 16.0),
                 child: Navbar(
                   title: "Search",
                   searchBar: true,

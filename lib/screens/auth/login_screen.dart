@@ -1,12 +1,16 @@
-import 'dart:convert'; // Thêm thư viện này để decode JSON
-import 'package:http/http.dart' as http;
-import 'package:project/constants/Theme.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:project/constants/theme.dart';
+import 'package:project/core/app_controller.dart';
 import 'package:project/core/rest_service.dart';
-import 'package:project/main.dart';
+import 'package:project/screens/auth/register_screen.dart';
+import 'package:project/screens/home.dart';
 import 'package:project/widgets/input.dart';
+import 'package:project/widgets/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart'; // Thêm Google SignIn
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -27,15 +31,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
     //check nukl
     if (username.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Username cannot be empty!'),
-      ));
+      Utils.noti("Please enter your email!");
       return;
     }
-    if (password.isEmpty || password.length < 6) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Password must be at least 6 characters!'),
-      ));
+    if (password.isEmpty) {
+      Utils.noti("Please enter your password!");
+      return;
+    }
+
+    if (!RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$').hasMatch(username)) {
+      Utils.noti("Invalid email format!");
       return;
     }
 
@@ -49,30 +54,38 @@ class _LoginScreenState extends State<LoginScreen> {
         'email': username,
         'password': password,
       });
-
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
-        String token = jsonResponse['data'];
+        var authData = jsonResponse['data'];
 
-        // Lưu token vào SharedPreferences
+        // Trích xuất JWT từ AuthData
+        String token = authData['jwt'];
+        String refreshToken = authData['refreshToken'];
+        var account = authData['account'];
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('jwt_token', token);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Login successfully! Welcome back!'),
-        ));
-        // Điều hướng đến màn hình chính
-        Navigator.pushReplacementNamed(context, '/home');
+        //lưu thông tin tài khoản
+        await prefs.setString('account', jsonEncode(account));
+
+        //lưu token và refresh token vào secure storage
+        FlutterSecureStorage storage = FlutterSecureStorage();
+        await storage.write(key: 'jwt_token', value: token);
+        await storage.write(key: 'refresh_token', value: refreshToken);
+        final AppController appController = Get.put(AppController());
+        appController.setIsAuthenticated(true);
+        Utils.noti("Login successfully! Welcome back!");
+        Utils.navigateTo(context, const HomeScreen());
       } else {
         var jsonResponse = jsonDecode(response.body)['message'];
 
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(jsonResponse),
-        ));
+        Utils.noti("Login failed: $jsonResponse");
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      if (e is SocketException) {
+        Utils.noti("Network error. Please check your connection.");
+      } else {
+        Utils.noti("Something went wrong. Please try again later.");
+      }
     } finally {
       setState(() {
         _isLoading = false; // Kết thúc loading
@@ -80,32 +93,30 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _navigateToRegister() {
-    Navigator.pushReplacementNamed(context, '/register');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: <Widget>[
-          // Hình nền
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/img/banner.jpg"),
-                fit: BoxFit.fill,
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+        child: Stack(
+          children: <Widget>[
+            // Hình nền
+            Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/img/banner.jpg"),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
-          ),
-          // Lớp phủ màu trắng mờ
-          Container(
-            color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.6),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 60, 16, 0),
-            child: SingleChildScrollView(
+            // Lớp phủ màu đen mờ
+            Container(
+              height: MediaQuery.of(context).size.height,
+              color: Colors.black54.withOpacity(0.65), // Đặt độ mờ cho lớp phủ
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 60, 16, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -137,8 +148,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     textColor: MaterialColors.input,
                   ),
                   const SizedBox(height: 20),
-                  _isLoading // Kiểm tra trạng thái loading
-                      ? const Center(child: CircularProgressIndicator()) // Hiển thị vòng tròn loading
+                  _isLoading
+                      ? const Center(child: CircularProgressIndicator())
                       : ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
@@ -156,7 +167,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                   const SizedBox(height: 10),
                   TextButton(
-                    onPressed: _navigateToRegister,
+                    onPressed: () {
+                      Utils.navigateTo(context, const RegisterScreen());
+                    },
                     child: const Text(
                       'Don\'t have an account? Register here.',
                       style: TextStyle(color: MaterialColors.primary),
@@ -164,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Utils.navigateTo(context, const HomeScreen());
                     },
                     child: const Text(
                       'Back to Home',
@@ -174,8 +187,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

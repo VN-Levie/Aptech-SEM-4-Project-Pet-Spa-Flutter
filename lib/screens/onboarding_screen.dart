@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:project/screens/home.dart';
+import 'package:project/widgets/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 
-class Onboarding extends StatelessWidget {
-  const Onboarding({super.key});
+class OnboardingScreen extends StatelessWidget {
+  const OnboardingScreen({super.key});
 
   Future<void> _setFirstTimeFalse(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isFirstTime', false); // Đặt cờ isFirstTime thành false
-    Navigator.pushReplacementNamed(context, '/home'); // Chuyển hướng đến màn hình Home
+    await prefs.setBool('first_time', false); // Đặt cờ isFirstTime thành false
+    Utils.navigateTo(context, const HomeScreen()); // Chuyển hướng
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart'; // Thêm import cho cached_network_image
 
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ProductCarousel extends StatefulWidget {

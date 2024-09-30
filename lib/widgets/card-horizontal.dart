@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CardHorizontal extends StatelessWidget {

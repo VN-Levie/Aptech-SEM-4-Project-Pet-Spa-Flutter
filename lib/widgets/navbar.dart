@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:project/constants/Theme.dart';
+import 'package:project/constants/theme.dart';
 import 'package:project/core/app_controller.dart'; // Import AppController
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
@@ -22,7 +22,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
   final Color bgColor;
   final bool isLoading;
 
-  Navbar({
+  const Navbar({
     super.key,
     this.title = "Home",
     this.categoryOne = "",
@@ -73,11 +73,11 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
             bottom: false,
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 10.0),
+                      padding: const EdgeInsets.only(top: 2.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,7 +154,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                         ],
                       ),
                     ),
-                    if (searchBar) const SizedBox(height: 10),
+                    // const SizedBox(height: 10),
                     // Search Bar
                     if (searchBar)
                       Padding(
