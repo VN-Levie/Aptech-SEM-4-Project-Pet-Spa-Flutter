@@ -6,6 +6,7 @@ import 'package:project/constants/theme.dart';
 import 'package:project/core/app_controller.dart';
 import 'package:project/core/rest_service.dart';
 import 'package:project/models/account.dart';
+import 'package:project/screens/auth/address_book_screen.dart';
 import 'package:project/screens/home.dart';
 import 'package:project/screens/pets/list_pet.dart';
 
@@ -44,13 +45,33 @@ class _ProfileState extends State<Profile> {
   }
 
  Future<void> _loadAccountInfo() async {   
-    final String apiUrl = '/api/pets/count/${account.id}';
+     String apiUrl = '/api/pets/count/${account.id}';
     try {
       var response = await RestService.get(apiUrl);
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
          appController.setPetCount(jsonResponse['data']);       
+      }
+    } catch (e) {
+      //kiểm tra mạng
+      if (e is SocketException) {
+        Utils.noti("No internet connection");
+      } else {
+        Utils.noti("Something went wrong. Please try again later.");
+      }
+    } finally {
+      setState(() {
+        isLoading = false;        
+      });
+    }
+      apiUrl = 'api/address-books/account/${account.id}/count';
+    try {
+      var response = await RestService.get(apiUrl);
+
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+         appController.setAddressBook(jsonResponse['data']);       
       }
     } catch (e) {
       //kiểm tra mạng
@@ -193,6 +214,25 @@ class _ProfileState extends State<Profile> {
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
                             Utils.navigateTo(context, PetScreen());
+                          },
+                        ),
+                      ),const SizedBox(height: 20),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            "Address Book",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            "You have ${appController.addressBook} addresses saved",
+                            style: TextStyle(color: MaterialColors.muted),
+                          ),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Utils.navigateTo(context, AddressBookScreen());
                           },
                         ),
                       ),

@@ -16,6 +16,7 @@ class AppController extends GetxController {
   //is authenticated
   var isAuthenticated = false.obs;
   var petCount = 0.obs;
+  var addressBook = 0.obs;
 
   var listProduct = [].obs;
 
@@ -105,6 +106,11 @@ class AppController extends GetxController {
     if (numberOfCartItems.value != total) {
       numberOfCartItems.value = total;
     }
+  }
+
+  //hàm cập nhật số lượng địa chỉ trong sổ địa chỉ
+  void setAddressBook(int value) {
+    addressBook.value = value;
   }
 
   //hàm cập nhật số lượng pet

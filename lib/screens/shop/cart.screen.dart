@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:project/constants/theme.dart';
 import 'package:project/core/app_controller.dart';
 import 'package:project/screens/auth/login_screen.dart';
+import 'package:project/screens/shop/checkout_screen.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/utils.dart';
 
@@ -156,7 +157,7 @@ class _ShoppingCartPage extends State<ShoppingCartPage> {
                   }, confirmText: "Login Now", cancelText: "Not Now");
                   return;
                 }
-
+                 Utils.navigateTo(context, const CheckoutScreen());
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: MaterialColors.primary,
