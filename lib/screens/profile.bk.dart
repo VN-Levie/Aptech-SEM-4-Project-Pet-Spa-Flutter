@@ -34,6 +34,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  late SharedPreferences prefs;
   late Account account = appController.account;
   final AppController appController = Get.put(AppController());
   bool isLoading = false;
@@ -43,7 +44,8 @@ class _ProfileState extends State<Profile> {
     _loadAccountInfo();
   }
 
- Future<void> _loadAccountInfo() async {   
+  Future<void> _loadAccountInfo() async {
+    prefs = await SharedPreferences.getInstance();   
     final String apiUrl = '/api/pets/count/${account.id}';
     try {
       var response = await RestService.get(apiUrl);
@@ -176,6 +178,122 @@ class _ProfileState extends State<Profile> {
                   padding: const EdgeInsets.symmetric(horizontal: 18.0, vertical: 12.0),
                   child: Column(
                     children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Utils.navigateTo(context, HomeScreen());
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "36",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      "Orders",
+                                      style: TextStyle(
+                                        color: MaterialColors.muted,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 8),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: MaterialColors.active,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Utils.navigateTo(context, HomeScreen());
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "5",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      "Bids & Offers",
+                                      style: TextStyle(
+                                        color: MaterialColors.muted,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 8),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: MaterialColors.active,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Utils.navigateTo(context, HomeScreen());
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "2",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      "Messages",
+                                      style: TextStyle(
+                                        color: MaterialColors.muted,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 8),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: MaterialColors.active,
+                                  size: 16,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                       const SizedBox(height: 20),
                       Card(
                         shape: RoundedRectangleBorder(
@@ -187,7 +305,7 @@ class _ProfileState extends State<Profile> {
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
-                            "You have ${appController.petCount} pets",
+                             "${appController.petCount} Pets",
                             style: TextStyle(color: MaterialColors.muted),
                           ),
                           trailing: Icon(Icons.arrow_forward_ios),
@@ -196,6 +314,26 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                       ),
+                      // Card(
+                      //   shape: RoundedRectangleBorder(
+                      //     borderRadius: BorderRadius.circular(10.0),
+                      //   ),
+                      //   child: ListTile(
+                      //     title: Text(
+                      //       "Photos",
+                      //       style: TextStyle(fontWeight: FontWeight.bold),
+                      //     ),
+                      //     subtitle: Text(
+                      //       "5 Photos",
+                      //       style: TextStyle(color: MaterialColors.muted),
+                      //     ),
+                      //     trailing: Icon(Icons.arrow_forward_ios),
+                      //     onTap: () {
+                      //       Utils.navigateTo(context, HomeScreen());
+                      //     },
+                      //   ),
+                      // ),
+                      const SizedBox(height: 20),
                       PhotoAlbum(imgArray: imgArray),
                     ],
                   ),

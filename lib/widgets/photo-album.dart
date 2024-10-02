@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/constants/theme.dart';
+import 'package:project/widgets/utils.dart';
 
 class PhotoAlbum extends StatelessWidget {
   final List<String> imgArray;
@@ -14,16 +15,16 @@ class PhotoAlbum extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "Recently viewed",
+              "Album",
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 fontSize: 14.0,
               ),
             ),
-            Text(
-              "View All",
-              style: TextStyle(color: MaterialColors.primary, fontSize: 12.0),
-            ),
+            // Text(
+            //   "View All",
+            //   style: TextStyle(color: MaterialColors.primary, fontSize: 12.0),
+            // ),
           ],
         ),
         SizedBox(
@@ -40,10 +41,12 @@ class PhotoAlbum extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                           image: DecorationImage(
-                              image: NetworkImage(item), fit: BoxFit.cover))))
+                              image: NetworkImage(Utils.replaceLocalhost(item)), fit: BoxFit.cover))))
                   .toList()),
         )
       ],
     );
   }
+
+  
 }

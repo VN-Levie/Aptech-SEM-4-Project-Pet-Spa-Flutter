@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get/get.dart';
+import 'package:project/core/app_controller.dart';
 import 'package:project/core/rest_service.dart';
+import 'package:project/models/account.dart';
 import 'package:project/screens/auth/login_screen.dart';
 import 'package:project/screens/onboarding_screen.dart';
 import 'package:project/widgets/card-square.dart';
@@ -78,6 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
   // Kiểm tra trạng thái đăng nhập dựa trên JWT token
   void _checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    final AppController appController = Get.put(AppController());
+    appController.loadCartData();
     //check is first time open app
     bool isFirstTime = prefs.getBool('first_time') ?? true;
     if (isFirstTime) {
@@ -86,25 +91,40 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     FlutterSecureStorage storage = FlutterSecureStorage();
     String? token = await storage.read(key: 'jwt_token');
-
+    String? refreshToken = await storage.read(key: 'refresh_token');
+    print("token: $token");
+    print("refresh token: $refreshToken");
     // Nếu token không tồn tại hoặc rỗng, chuyển hướng đến màn hình đăng nhập
-    if (token != null && token.isNotEmpty) {
+    if (token != null && token.isNotEmpty && !appController.isAuthenticated.value) {
       try {
-        String url = '/verify-token?token=$token';
+        String url = '/api/auth/verify-token?token=$token';
         var response = await RestService.get(url);
-        print('response: ${response.body}');
         if (response.statusCode == 200) {
           var jsonResponse = jsonDecode(response.body);
           var authData = jsonResponse['data'];
 
           // Trích xuất JWT từ AuthData
           String token = authData['jwt'];
-          var account = authData['account'];
-          
+          var accountJson = authData['account'];
+          //  var accountJson = authData['account'];
+          Account account = Account.fromJson(accountJson);
           await prefs.setString('jwt_token', token);
-          await prefs.setString('account', jsonEncode(account));
+          await prefs.setString('account', jsonEncode(accountJson));
+
+          appController.setIsAuthenticated(true);
+          appController.setAccount(account);
           Utils.noti("Welcome back!");
-          Utils.navigateTo(context, const HomeScreen());
+          try {
+            String apiCount = '/api/pets/count/${account.id}';
+            var responseCount = await RestService.get(apiCount);
+            if (responseCount.statusCode == 200) {
+              var jsonResponse = jsonDecode(responseCount.body);
+              appController.setPetCount(jsonResponse['data']);
+            }
+          } catch (e) {
+            //Utils.noti('Error while updating pet count');
+          }
+          //Utils.navigateTo(context, const HomeScreen());
         } else if (response.statusCode == 400) {
           //trường hợp tk không tồn tại nữa
           //xóa jwt token
@@ -112,15 +132,15 @@ class _HomeScreenState extends State<HomeScreen> {
           Utils.noti("Token expired. Please login again");
           Utils.navigateTo(context, const LoginScreen());
         } else if (response.statusCode == 401) {
-          String? refreshToken = await storage.read(key: 'refresh_token');
+          print("401 Unauthorized, trying to refresh token... at home");
           if (refreshToken == null) {
-            Utils.noti("Token expired. Please login again!");
+            Utils.noti("Token expired. Please login again!!");
             Utils.navigateTo(context, const LoginScreen());
           }
-          //lấy refresh token
           var response = await RestService.post('/api/auth/refresh-token', {
             'refresh_token': refreshToken,
           });
+
           if (response.statusCode == 200) {
             var jsonResponse = jsonDecode(response.body);
             var authData = jsonResponse['data'];
@@ -134,9 +154,21 @@ class _HomeScreenState extends State<HomeScreen> {
             await prefs.setString('account', jsonEncode(account));
             await storage.write(key: 'jwt_token', value: token);
             Utils.noti("Welcome back!");
-            Utils.navigateTo(context, const HomeScreen());
+            try {
+              String apiCount = '/api/pets/count/${account.id}';
+              var responseCount = await RestService.get(apiCount);
+              if (responseCount.statusCode == 200) {
+                var jsonResponse = jsonDecode(responseCount.body);
+                appController.setPetCount(jsonResponse['data']);
+              }
+            } catch (e) {
+              //Utils.noti('Error while updating pet count');
+            }
+            //Utils.navigateTo(context, const HomeScreen());
           } else {
-            Utils.noti("Token expired. Please login again.!");
+            print("response.statusCode != 200");
+            print(jsonDecode(response.statusCode.toString()));
+            Utils.noti("Token expired. Please login again.!!");
             Utils.navigateTo(context, const LoginScreen());
           }
         } else {

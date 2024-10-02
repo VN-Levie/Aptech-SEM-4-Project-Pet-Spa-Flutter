@@ -31,6 +31,7 @@ class DrawerItem extends StatelessWidget {
     return DrawerTile(
       icon: icon,
       onTap: () {
+        Navigator.of(context).pop();
         if (needLogin) {
           Utils.confirmDialog(context, "Login Required", "This feature needs a logged-in account.", () {
             Utils.navigateTo(context, const LoginScreen());

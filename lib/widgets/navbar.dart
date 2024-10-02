@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:project/constants/theme.dart';
-import 'package:project/core/app_controller.dart'; // Import AppController
+import 'package:project/core/app_controller.dart';
+import 'package:project/screens/shop/cart.screen.dart';
+import 'package:project/widgets/utils.dart'; // Import AppController
 
 class Navbar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -37,7 +39,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
     this.searchAutofocus = false,
     this.backButton = false,
     this.noShadow = false,
-    this.bgColor = Colors.white,
+    this.bgColor = MaterialColors.drawerHeader,
     this.searchBar = false,
     this.isLoading = false,
   });
@@ -87,7 +89,7 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                               IconButton(
                                 icon: Icon(
                                   !backButton ? Icons.menu : Icons.arrow_back_ios,
-                                  color: !transparent ? (bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white,
+                                  color: !transparent ? (bgColor == Colors.white ? Colors.black : Colors.white) : MaterialColors.drawerHeader,
                                   size: 28.0,
                                 ),
                                 onPressed: () {
@@ -95,6 +97,8 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                                     Scaffold.of(context).openDrawer();
                                   } else {
                                     Navigator.pop(context);
+                                    //update lại cart badges
+                                 
                                   }
                                 },
                               ),
@@ -104,8 +108,10 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                                 style: TextStyle(
                                   color: !transparent ? (bgColor == Colors.white ? Colors.black : Colors.white) : Colors.white,
                                   fontWeight: FontWeight.w600,
-                                  fontSize: 22.0,
+                                  fontSize: 22.0,                                  
                                 ),
+                                overflow: TextOverflow.ellipsis, // Cắt bớt nếu quá dài
+                                maxLines: 1, // Đảm bảo chỉ hiển thị một dòng
                               ),
                             ],
                           ),
@@ -134,10 +140,10 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                                 // Cart icon with GetX badge
                                 Obx(() => badges.Badge(
                                       badgeContent: Text(
-                                        appController.cartItems.value.toString(),
+                                        appController.numberOfCartItems.value.toString(),
                                         style: const TextStyle(color: Colors.white, fontSize: 10),
                                       ),
-                                      showBadge: appController.cartItems.value > 0,
+                                      showBadge: appController.numberOfCartItems.value > 0,
                                       child: IconButton(
                                         icon: Icon(
                                           Icons.shopping_cart_outlined,
@@ -145,7 +151,8 @@ class Navbar extends StatelessWidget implements PreferredSizeWidget {
                                           size: 24.0,
                                         ),
                                         onPressed: () {
-                                          // Xử lý sự kiện bấm nút giỏ hàng
+                                          // ShoppingCartPage
+                                          Utils.navigateTo(context, ShoppingCartPage());
                                         },
                                       ),
                                     )),

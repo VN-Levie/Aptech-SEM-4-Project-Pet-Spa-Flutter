@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get/get.dart';
+import 'package:project/core/app_controller.dart';
+import 'package:project/models/shop_product.dart';
 import 'dart:async';
 import 'package:project/widgets/navbar.dart';
 
@@ -51,8 +54,7 @@ class _ProductCarouselState extends State<ProductCarousel> {
               child: ClipRRect(
                 child: CachedNetworkImage(
                   imageUrl: item["img"] ?? "",
-                  placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
+                  placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                   fit: BoxFit.cover,
                   width: MediaQuery.of(context).size.width,
@@ -91,14 +93,10 @@ class _ProductCarouselState extends State<ProductCarousel> {
                 child: Container(
                   width: 8.0,
                   height: 8.0,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 10.0, horizontal: 4.0),
+                  margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: (Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black)
-                        .withOpacity(_current == entry.key ? 0.9 : 0.4),
+                    color: (Theme.of(context).brightness == Brightness.dark ? Colors.white : Colors.black).withOpacity(_current == entry.key ? 0.9 : 0.4),
                   ),
                 ),
               );
@@ -111,15 +109,11 @@ class _ProductCarouselState extends State<ProductCarousel> {
 }
 
 class ProductDetails extends StatefulWidget {
-  final String productName;
-  final double price;
-  final List<String> productImages;
+  final ShopProduct product;
 
   const ProductDetails({
     super.key,
-    required this.productName,
-    required this.price,
-    required this.productImages,
+    required this.product,
   });
 
   @override
@@ -127,14 +121,19 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  final appController = Get.put(AppController());
+
   int quantity = 1; // Biến lưu số lượng sản phẩm
+  Future<void> addToCart(ShopProduct product) async {
+    appController.updateCart(product, quantity: quantity);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: Navbar(
-        title: widget.productName,
+        title: widget.product.name,
         transparent: true,
         backButton: true,
       ),
@@ -142,7 +141,11 @@ class _ProductDetailsState extends State<ProductDetails> {
         child: Column(
           children: [
             ProductCarousel(
-              imgArray: widget.productImages.map((img) => {"img": img}).toList(),
+              imgArray: widget.product.imageUrls
+                  .map((img) => {
+                        "img": img
+                      })
+                  .toList(),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -151,7 +154,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 children: [
                   const SizedBox(height: 20),
                   Text(
-                    widget.productName,
+                    widget.product.name,
                     style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
@@ -159,7 +162,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "\$${widget.price.toString()}",
+                    "\$${widget.product.price.toString()}",
                     style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
@@ -198,7 +201,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   const SizedBox(height: 30),
                   ElevatedButton(
                     onPressed: () {
-                      // Xử lý khi nhấn "Thêm vào giỏ hàng"
+                      addToCart(widget.product);
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.purple,

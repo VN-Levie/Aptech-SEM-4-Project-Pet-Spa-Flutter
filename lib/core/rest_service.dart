@@ -85,7 +85,7 @@ class RestService {
       http.Response response = await http.Response.fromStream(streamedResponse);
 
       // Kiểm tra nếu bị 401 thì thử refresh token và gửi lại yêu cầu
-      if (response.statusCode == 401) {
+      if (response.statusCode == 401 && request.url.path.contains('/api/auth/verify-token') == false) {
         print("401 Unauthorized, trying to refresh token...");
 
         String? newToken = await _attemptRefreshToken();

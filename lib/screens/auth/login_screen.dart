@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:project/constants/theme.dart';
 import 'package:project/core/app_controller.dart';
 import 'package:project/core/rest_service.dart';
+import 'package:project/models/account.dart';
 import 'package:project/screens/auth/register_screen.dart';
 import 'package:project/screens/home.dart';
 import 'package:project/widgets/input.dart';
@@ -57,24 +58,35 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
         var authData = jsonResponse['data'];
-
         // Trích xuất JWT từ AuthData
         String token = authData['jwt'];
         String refreshToken = authData['refreshToken'];
-        var account = authData['account'];
-
+        var accountJson = authData['account'];
+        Account account = Account.fromJson(accountJson);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         //lưu thông tin tài khoản
-        await prefs.setString('account', jsonEncode(account));
-
+        await prefs.setString('account', jsonEncode(accountJson));
         //lưu token và refresh token vào secure storage
         FlutterSecureStorage storage = FlutterSecureStorage();
         await storage.write(key: 'jwt_token', value: token);
         await storage.write(key: 'refresh_token', value: refreshToken);
+        print("token: $token");
+        print("refresh token: $refreshToken");
         final AppController appController = Get.put(AppController());
         appController.setIsAuthenticated(true);
+        appController.setAccount(account);
         Utils.noti("Login successfully! Welcome back!");
         Utils.navigateTo(context, const HomeScreen());
+        try {
+          String apiCount = '/api/pets/count/${account.id}';
+          var responseCount = await RestService.get(apiCount);
+          if (responseCount.statusCode == 200) {
+            var jsonResponse = jsonDecode(responseCount.body);
+            appController.setPetCount(jsonResponse['data']);
+          }
+        } catch (e) {
+          // Utils.noti('Error while updating pet count');
+        }
       } else {
         var jsonResponse = jsonDecode(response.body)['message'];
 
@@ -84,6 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (e is SocketException) {
         Utils.noti("Network error. Please check your connection.");
       } else {
+        print(e);
         Utils.noti("Something went wrong. Please try again later.");
       }
     } finally {

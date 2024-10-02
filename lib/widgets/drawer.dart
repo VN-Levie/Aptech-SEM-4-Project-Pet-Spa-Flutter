@@ -41,97 +41,96 @@ class _MaterialDrawerState extends State<MaterialDrawer> {
 
   // Danh sách các mục trong Drawer
 // Danh sách các mục trong Drawer sau khi sắp xếp lại
-final List<Map<String, dynamic>> drawerItems = [
-  // Các mục chính của ứng dụng
-  {
-    'icon': Icons.home,
-    'title': 'Home',
-    'route': '/home',
-    'screen': const HomeScreen(),
-    'needLogin': false,
-  },
-  {
-    'icon': Icons.calendar_month,
-    'title': 'Spa Booking',
-    'route': '/booking',
-    'screen': const SpaBooking(),
-    'needLogin': true,
-  },
-  {
-    'icon': Icons.shopping_cart,
-    'title': 'Pet Shop',
-    'route': '/pet_shop',
-    'screen': const PetShopScreen(),
-    'needLogin': false,
-  },
-  {
-    'icon': Icons.hotel,
-    'title': 'Pet Hotel',
-    'route': '/hotel',
-    'screen': const RentPetHotel(),
-    'needLogin': true,
-  },
-  {
-    'icon': Icons.dashboard_customize,
-    'title': 'Accessories Customization',
-    'route': '/customization',
-    'screen': const HomeScreen(),
-    'needLogin': true,
-  },
-  // Các mục quản lý tài khoản
-  {
-    'icon': Icons.account_circle,
-    'title': 'Profile',
-    'route': '/profile',
-    'screen': const Profile(),
-    'needLogin': true,
-  },
-  {
-    'icon': Icons.history,
-    'title': 'Booking History',
-    'route': '/booking_history',
-    'screen': const BookingHistoryScreen(),
-    'needLogin': true,
-  },
-  {
-    'icon': Icons.settings,
-    'title': 'App Settings',
-    'route': '/settings',
-    'screen': const Settings(),
-    'needLogin': false,
-  },
-  
-  {
-    'icon': Icons.logout,
-    'title': 'Log Out',
-    'route': '/logout',
-    'screen': const LogoutScreen(),
-    'needLogin': false,
-  },
-  {
-    'icon': Icons.login,
-    'title': 'Login',
-    'route': '/login',
-    'screen': const LoginScreen(),
-    'needLogin': false,
-  },
-  {
-    'icon': Icons.person_add,
-    'title': 'Register',
-    'route': '/register',
-    'screen': const RegisterScreen(),
-    'needLogin': false,
-  },
-  // Mục khác
-  {
-    'icon': Icons.dashboard_customize,
-    'title': 'Components',
-    'route': '/component',
-    'screen': const Components(),
-    'needLogin': false,
-  },
-];
+  final List<Map<String, dynamic>> drawerItems = [
+    // Các mục chính của ứng dụng
+    {
+      'icon': Icons.home,
+      'title': 'Home',
+      'route': '/home',
+      'screen': const HomeScreen(),
+      'needLogin': false,
+    },
+    {
+      'icon': Icons.calendar_month,
+      'title': 'Spa Booking',
+      'route': '/booking',
+      'screen': const SpaBooking(),
+      'needLogin': false,
+    },
+    {
+      'icon': Icons.shopping_cart,
+      'title': 'Pet Shop',
+      'route': '/pet_shop',
+      'screen': const PetShopScreen(),
+      'needLogin': false,
+    },
+    {
+      'icon': Icons.hotel,
+      'title': 'Pet Hotel',
+      'route': '/hotel',
+      'screen': const RentPetHotel(),
+      'needLogin': true,
+    },
+    {
+      'icon': Icons.dashboard_customize,
+      'title': 'Accessories Customization',
+      'route': '/customization',
+      'screen': const HomeScreen(),
+      'needLogin': true,
+    },
+    // Các mục quản lý tài khoản
+    {
+      'icon': Icons.account_circle,
+      'title': 'Profile',
+      'route': '/profile',
+      'screen': const Profile(),
+      'needLogin': true,
+    },
+    {
+      'icon': Icons.history,
+      'title': 'Booking History',
+      'route': '/booking_history',
+      'screen': const BookingHistoryScreen(),
+      'needLogin': true,
+    },
+    {
+      'icon': Icons.settings,
+      'title': 'App Settings',
+      'route': '/settings',
+      'screen': const Settings(),
+      'needLogin': false,
+    },
 
+    {
+      'icon': Icons.logout,
+      'title': 'Log Out',
+      'route': '/logout',
+      'screen': const LogoutScreen(),
+      'needLogin': false,
+    },
+    {
+      'icon': Icons.login,
+      'title': 'Login',
+      'route': '/login',
+      'screen': const LoginScreen(),
+      'needLogin': false,
+    },
+    {
+      'icon': Icons.person_add,
+      'title': 'Register',
+      'route': '/register',
+      'screen': const RegisterScreen(),
+      'needLogin': false,
+    },
+    // Mục khác
+    {
+      'icon': Icons.dashboard_customize,
+      'title': 'Components',
+      'route': '/component',
+      'screen': const Components(),
+      'needLogin': false,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
