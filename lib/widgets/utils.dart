@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Utils {
 
-  static Future<T> navigateTo<T>(BuildContext context, Widget screen, {bool clearStack = false}) {
+  static Future<T> navigateTo<T>(BuildContext context, Widget screen, {bool clearStack = false, Widget? screen2}) {
     if (clearStack) {
       return Navigator.pushAndRemoveUntil(
         context,

@@ -7,6 +7,7 @@ import 'package:project/screens/auth/logout_screen.dart';
 import 'package:project/screens/auth/register_screen.dart';
 import 'package:project/screens/components.dart';
 import 'package:project/screens/home.dart';
+import 'package:project/screens/pet_hotel/hotel_booking_history_screen.dart';
 import 'package:project/screens/pet_hotel/rent_pet_hotel.dart';
 import 'package:project/screens/profile.dart';
 import 'package:project/screens/settings.dart';
@@ -88,17 +89,17 @@ class _MaterialDrawerState extends State<MaterialDrawer> {
     },
     {
       'icon': Icons.history,
-      'title': 'Booking History',
+      'title': 'Spa Booking History',
       'route': '/booking_history',
       'screen': const BookingHistoryScreen(),
       'needLogin': true,
     },
     {
-      'icon': Icons.settings,
-      'title': 'App Settings',
-      'route': '/settings',
-      'screen': const Settings(),
-      'needLogin': false,
+      'icon': Icons.history,
+      'title': 'Hotel Booking History',
+      'route': '/booking_history',
+      'screen': const HotelBookingHistoryScreen(),
+      'needLogin': true,
     },
 
     {

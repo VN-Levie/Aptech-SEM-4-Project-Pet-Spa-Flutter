@@ -180,4 +180,18 @@ class AppController extends GetxController {
     numberOfCartItems.value = 0;
     saveCartData();
   }
+
+
+  // Thêm biến để lưu tổng số đơn hàng
+var totalOrders = 0.obs;
+
+// Thêm hàm để cập nhật số lượng đơn hàng
+void setTotalOrders(int value) {
+  totalOrders.value = value;
+}
+
+// Hàm để lấy tổng số đơn hàng
+int getTotalOrders() {
+  return totalOrders.value;
+}
 }

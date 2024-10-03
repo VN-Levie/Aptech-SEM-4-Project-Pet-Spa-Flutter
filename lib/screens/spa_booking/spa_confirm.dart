@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:project/core/app_controller.dart';
 import 'package:project/core/rest_service.dart';
 import 'package:project/models/spa_service.dart';
+import 'package:project/screens/spa_booking/booking_history.dart';
 import 'package:project/widgets/card_spa_service_small.dart';
 import 'package:project/widgets/dropdown_input.dart';
 import 'package:project/widgets/navbar.dart';
@@ -289,23 +290,11 @@ class _SpaConfirmState extends State<SpaConfirm> {
     });
 
     try {
+      String bookedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_selectedDate!.toUtc());
+      String usedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_selectedDate!.toUtc());
+      String usedTime = _selectedTime!.format(context);
 
-String bookedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_selectedDate!.toUtc());
-String usedDate = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(_selectedDate!.toUtc());
-String usedTime = _selectedTime!.format(context);
-//  "serviceId": 2,
-//   "petId": 25,
-//   "accountId": 1,
-//   "bookedDate": "2024-10-01T04:21:34.274Z",
-//   "usedDate": "2024-10-01T04:21:34.274Z",
-//   "usedTime": "string",
-//   "price": 0,
-//   "status": "string",
-//   "pickUpType": "string",
-//   "returnType": "string",
-//   "paymentType": "string"
-
-String pickupAddress = _transportation == 'Pick-up by staff' ? _addressController.text : 'Self-drop-off';
+      String pickupAddress = _transportation == 'Pick-up by staff' ? _addressController.text : 'Self-drop-off';
       String returnAddress = _returnTransportation == 'Return by staff' ? _addressController.text : 'Self-return';
       var response = await RestService.post('/api/spa/bookings', {
         'accountId': appController.account.id,
@@ -322,16 +311,14 @@ String pickupAddress = _transportation == 'Pick-up by staff' ? _addressControlle
         'status': 'Pending',
         'pickUpAddress': pickupAddress,
         'returnAddress': returnAddress,
-
       });
-
-      
 
       print(response.statusCode);
 
       if (response.statusCode == 201) {
         Utils.noti("Booking successful! Thak you for using our service. The staff will contact you soon.");
         //Navigator.pop(context);
+        Utils.navigateTo(context, const BookingHistoryScreen());
       } else if (response.statusCode == 400) {
         // Xử lý lỗi 400: Dữ liệu không hợp lệ
         var jsonResponse = jsonDecode(response.body);

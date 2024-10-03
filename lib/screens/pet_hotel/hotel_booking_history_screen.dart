@@ -5,19 +5,19 @@ import 'package:intl/intl.dart';
 import 'package:project/constants/theme.dart';
 import 'package:project/core/app_controller.dart';
 import 'package:project/core/rest_service.dart';
-import 'package:project/screens/spa_booking/spa_booking_detail_screen.dart';
+import 'package:project/screens/pet_hotel/hotel_booking_detail_screen.dart';
 import 'package:project/widgets/drawer.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/utils.dart';
 
-class BookingHistoryScreen extends StatefulWidget {
-  const BookingHistoryScreen({super.key});
+class HotelBookingHistoryScreen extends StatefulWidget {
+  const HotelBookingHistoryScreen({super.key});
 
   @override
-  _BookingHistoryScreenState createState() => _BookingHistoryScreenState();
+  _HotelBookingHistoryScreenState createState() => _HotelBookingHistoryScreenState();
 }
 
-class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
+class _HotelBookingHistoryScreenState extends State<HotelBookingHistoryScreen> {
   final AppController appController = Get.put(AppController());
   List<dynamic> bookings = [];
   List<dynamic> filteredBookings = [];
@@ -38,7 +38,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
     });
 
     int accountId = appController.account.id;
-    final String apiUrl = '/api/spa/bookings/account/$accountId';
+    final String apiUrl = '/api/hotel-bookings/account/$accountId';
 
     try {
       var response = await RestService.get(apiUrl);
@@ -49,9 +49,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
           setState(() {
             bookings = data;
             bookings.sort((a, b) => b['id'].compareTo(a['id']));
-            _fetchProductAndPetDetails();
           });
         }
+        await _fetchPetDetails();
       } else {
         var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
         Utils.noti(jsonResponse['message']);
@@ -64,9 +64,29 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       });
     }
   }
+  //fetch pet details
+  Future<void> _fetchPetDetails() async {
+    for (var booking in bookings) {
+      final String petApiUrl = '/api/pets/${booking['accountId']}/${booking['petId']}';
+      try {
+        var response = await RestService.get(petApiUrl);
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
+          var data = jsonResponse['data'];
+          setState(() {
+            booking['petDetails'] = data;
+          });
+        } else {
+          //Utils.noti('Failed to load pet details: ${response.statusCode}');
+        }
+      } catch (e) {
+        Utils.noti('Error loading pet details: $e');
+      }
+    }
+  }
 
   Future<void> _cancelBooking(String booking) async {
-    final String cancelApiUrl = '/api/spa/bookings/cancel/$booking';
+    final String cancelApiUrl = '/api/hotel-bookings/cancel/$booking';
 
     try {
       var response = await RestService.put(cancelApiUrl, {});
@@ -74,31 +94,12 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
         Utils.noti("Booking canceled successfully!");
         await _fetchBookings();
       } else {
-        Utils.noti("Failed to cancel booking: ${response.statusCode}");
+        var jsonResponse = jsonDecode(response.body);
+        Utils.noti(jsonResponse['message'] ?? 'Failed to cancel booking');
       }
     } catch (e) {
       Utils.noti('Error canceling booking: $e');
     }
-  }
-
-  Future<void> _fetchProductAndPetDetails() async {
-    for (var booking in bookings) {
-      var productResponse = await RestService.get('/api/spa/product/${booking['serviceId']}');
-      if (productResponse.statusCode == 200) {
-        var productJson = jsonDecode(utf8.decode(productResponse.bodyBytes));
-        booking['productDetails'] = productJson['data'];
-      }
-
-      var petResponse = await RestService.get('/api/pets/${booking['accountId']}/${booking['petId']}');
-      if (petResponse.statusCode == 200) {
-        var petJson = jsonDecode(utf8.decode(petResponse.bodyBytes));
-        booking['petDetails'] = petJson['data'];
-      }
-    }
-
-    setState(() {
-      _showAllBookings();
-    });
   }
 
   void _showAllBookings() {
@@ -110,13 +111,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
 
   void _filterBookingsByDate(String date) {
     setState(() {
-      filteredBookings = bookings.where((booking) => DateFormat('yyyy-MM-dd').format(DateTime.parse(booking['bookedDate'])) == date).toList();
+      filteredBookings = bookings.where((booking) => DateFormat('yyyy-MM-dd').format(DateTime.parse(booking['checkInDate'])) == date).toList();
       showAllBookings = false;
-
-      // Kiểm tra nếu không có booking nào cho ngày được chọn
-      if (filteredBookings.isEmpty) {
-        // Utils.noti("No bookings for this day");
-      }
     });
   }
 
@@ -128,9 +124,9 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
 
     return Scaffold(
       appBar: const Navbar(
-        title: "Booking History",
+        title: "Hotel Bookings",
       ),
-      drawer: const MaterialDrawer(currentPage: "/spa-booking"),
+      drawer: const MaterialDrawer(currentPage: "/hotel-booking"),
       body: bookings.isEmpty
           ? const Center(
               child: Text('No bookings found.'),
@@ -146,14 +142,13 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                             itemCount: filteredBookings.length,
                             itemBuilder: (context, index) {
                               var booking = filteredBookings[index];
-                              var productDetails = booking['productDetails'] ?? {};
                               var petDetails = booking['petDetails'] ?? {};
 
                               return GestureDetector(
                                 onTap: () {
                                   Utils.navigateTo(
                                     context,
-                                    SpaBookingDetailScreen(bookingId: booking['id']),
+                                    HotelBookingDetailScreen(bookingId: booking['id']),
                                   );
                                 },
                                 child: Card(
@@ -171,9 +166,8 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
                                           ),
                                         ),
                                         const SizedBox(height: 8),
-                                        Text('Service: ${productDetails['name'] ?? 'N/A'}'),
-                                        Text('Date: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(booking['bookedDate']))}'),
-                                        Text('Time: ${booking['usedTime']}'),
+                                        Text('Check-in Date: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(booking['checkInDate']))}'),
+                                        Text('Check-out Date: ${DateFormat('yyyy-MM-dd').format(DateTime.parse(booking['checkOutDate']))}'),
                                         Text('Pet: ${petDetails['name'] ?? 'N/A'}'),
                                         Text('Status: ${booking['status']}'),
                                         const SizedBox(height: 16),
@@ -219,7 +213,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
   }
 
   Widget _buildCalendar() {
-    List<String> bookedDates = bookings.map((booking) => DateFormat('yyyy-MM-dd').format(DateTime.parse(booking['bookedDate']))).toList();
+    List<String> bookedDates = bookings.map((booking) => DateFormat('yyyy-MM-dd').format(DateTime.parse(booking['checkInDate']))).toList();
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -258,7 +252,7 @@ class _BookingHistoryScreenState extends State<BookingHistoryScreen> {
       ),
       itemCount: 31,
       itemBuilder: (context, index) {
-        DateTime currentDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)).add(Duration(days: index+1));
+        DateTime currentDate = DateTime.now().subtract(Duration(days: DateTime.now().weekday - 1)).add(Duration(days: index + 1));
         String formattedDate = DateFormat('yyyy-MM-dd').format(currentDate);
         bool isBooked = bookedDates.contains(formattedDate);
         bool isSelected = formattedDate == selectedDate;

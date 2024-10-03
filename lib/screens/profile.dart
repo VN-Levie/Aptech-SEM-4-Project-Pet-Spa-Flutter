@@ -9,6 +9,7 @@ import 'package:project/models/account.dart';
 import 'package:project/screens/auth/address_book_screen.dart';
 import 'package:project/screens/home.dart';
 import 'package:project/screens/pets/list_pet.dart';
+import 'package:project/screens/shop/order_list_screen.dart';
 
 //widgets
 import 'package:project/widgets/navbar.dart';
@@ -44,47 +45,45 @@ class _ProfileState extends State<Profile> {
     _loadAccountInfo();
   }
 
- Future<void> _loadAccountInfo() async {   
-     String apiUrl = '/api/pets/count/${account.id}';
-    try {
-      var response = await RestService.get(apiUrl);
+  Future<void> _loadAccountInfo() async {
+    // Danh sách các API cần gọi
+    List<String> apiUrls = [
+      '/api/pets/count/${account.id}',
+      '/api/address-books/account/${account.id}/count',
+      '/api/shop-orders/account/${account.id}/count',
+    ];
 
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
-         appController.setPetCount(jsonResponse['data']);       
-      }
-    } catch (e) {
-      //kiểm tra mạng
-      if (e is SocketException) {
-        Utils.noti("No internet connection");
-      } else {
-        Utils.noti("Something went wrong. Please try again later.");
-      }
-    } finally {
-      setState(() {
-        isLoading = false;        
-      });
-    }
-      apiUrl = 'api/address-books/account/${account.id}/count';
-    try {
-      var response = await RestService.get(apiUrl);
+    // Danh sách các hành động cập nhật trạng thái tương ứng với các API
+    List<Function(dynamic)> updateActions = [
+      (data) => appController.setPetCount(data),
+      (data) => appController.setAddressBook(data),
+      (data) => appController.setTotalOrders(data),
+    ];
 
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
-         appController.setAddressBook(jsonResponse['data']);       
+    setState(() {
+      isLoading = true;
+    });
+
+    // Thực hiện từng API trong danh sách
+    for (int i = 0; i < apiUrls.length; i++) {
+      try {
+        var response = await RestService.get(apiUrls[i]);
+        if (response.statusCode == 200) {
+          var jsonResponse = jsonDecode(response.body);
+          updateActions[i](jsonResponse['data']); // Cập nhật theo API tương ứng
+        }
+      } catch (e) {
+        if (e is SocketException) {
+          Utils.noti("No internet connection");
+        } else {
+          Utils.noti("Something went wrong. Please try again later.");
+        }
       }
-    } catch (e) {
-      //kiểm tra mạng
-      if (e is SocketException) {
-        Utils.noti("No internet connection");
-      } else {
-        Utils.noti("Something went wrong. Please try again later.");
-      }
-    } finally {
-      setState(() {
-        isLoading = false;        
-      });
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -216,7 +215,8 @@ class _ProfileState extends State<Profile> {
                             Utils.navigateTo(context, PetScreen());
                           },
                         ),
-                      ),const SizedBox(height: 20),
+                      ),
+                      const SizedBox(height: 20),
                       Card(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
@@ -236,7 +236,27 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                       ),
-                      PhotoAlbum(imgArray: imgArray),
+                      const SizedBox(height: 20),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            "Orders",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            "You have ${appController.totalOrders} orders",
+                            style: TextStyle(color: MaterialColors.muted),
+                          ),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Utils.navigateTo(context, OrderListScreen());
+                          },
+                        ),
+                      ),
+                      // PhotoAlbum(imgArray: imgArray),
                     ],
                   ),
                 ),

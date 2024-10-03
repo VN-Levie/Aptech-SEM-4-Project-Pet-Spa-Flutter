@@ -40,6 +40,9 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
     super.initState();
     _countryController.text = 'Vietnam';
     _postalCodeController.text = '700000';
+    _fullNameController.text = appController.account.name;
+    // _phoneNumberController.text = appController.account.phone;
+    _emailController.text = appController.account.email;
     if (widget.addressBookId != null) {
       _isEditMode = true;
       _fetchAddressBookDetails(widget.addressBookId!);
@@ -71,8 +74,7 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
           _countryController.text = data['country'];
           _fullNameController.text = data['fullName'] ?? '';
           _phoneNumberController.text = data['phoneNumber'] ?? '';
-          _emailController.text = data['email'] ?? '';
-
+          _emailController.text = data['email'] ?? '';         
           setState(() {
             _isLoading = false;
           });
