@@ -13,6 +13,7 @@ import 'package:project/screens/profile.dart';
 import 'package:project/screens/settings.dart';
 import 'package:project/screens/shop/pet_shop_screen.dart';
 import 'package:project/screens/spa_booking/booking_history.dart';
+import 'package:project/screens/spa_booking/pet_tag.dart';
 import 'package:project/screens/spa_booking/spa_booking.dart';
 import 'package:project/widgets/drawer_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,7 +77,7 @@ class _MaterialDrawerState extends State<MaterialDrawer> {
       'icon': Icons.dashboard_customize,
       'title': 'Accessories Customization',
       'route': '/customization',
-      'screen': const HomeScreen(),
+      'screen': const PetTagScreen(),
       'needLogin': true,
     },
     // Các mục quản lý tài khoản
@@ -124,13 +125,13 @@ class _MaterialDrawerState extends State<MaterialDrawer> {
       'needLogin': false,
     },
     // Mục khác
-    {
-      'icon': Icons.dashboard_customize,
-      'title': 'Components',
-      'route': '/component',
-      'screen': const Components(),
-      'needLogin': false,
-    },
+    // {
+    //   'icon': Icons.dashboard_customize,
+    //   'title': 'Components',
+    //   'route': '/component',
+    //   'screen': const Components(),
+    //   'needLogin': false,
+    // },
   ];
 
   @override

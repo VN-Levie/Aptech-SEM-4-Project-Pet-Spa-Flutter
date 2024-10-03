@@ -250,7 +250,7 @@ class _RentPetHotelState extends State<RentPetHotel> {
       appBar: const Navbar(
         title: "Rent Pet Hotel",
       ),
-      drawer: const MaterialDrawer(currentPage: "hotel"),
+      drawer: const MaterialDrawer(currentPage: "/hotel"),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(

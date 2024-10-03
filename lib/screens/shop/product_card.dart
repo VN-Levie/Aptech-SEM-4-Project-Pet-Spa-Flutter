@@ -57,7 +57,7 @@ class ProductCard extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: onAddToCart,
-              child: const Text('Thêm vào giỏ'),
+              child: const Text('Add to cart'),
             ),
           ],
         ),

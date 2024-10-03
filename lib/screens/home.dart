@@ -46,18 +46,18 @@ final Map<String, Map<String, String>> homeCards = {
 
 List<Map<String, String>> imgArray = [
   {
-    "img": "https://via.placeholder.com/500?text=Ưu+Đãi+tháng+9",
+    "img": "https://i.imgur.com/dWsS3PN.png",
     "title": "Ưu Đãi tháng 9",
     "description": "Ưu đãi giảm giá 50% cho tất cả các dịch vụ Spa",
   },
   {
     "title": "Ra Mắt Dịch Vụ Pet Hotel",
-    "img": "https://via.placeholder.com/500?text=Pet+Hotel",
+    "img": "https://i.imgur.com/0tXUr9P.jpeg",
     "description": "Dịch vụ Pet Hotel với giá cả hợp lý và chất lượng tốt nhất.",
   },
   {
     "title": "Free Cước Vận Chuyển",
-    "img": "https://via.placeholder.com/500?text=Free+Drop-Pick",
+    "img": "https://i.imgur.com/4Ko68lh.jpeg",
     "description": "Trong tháng 9, miễn phí cước vận chuyển cho tất cả các dịch vụ Spa",
   },
 ];
@@ -212,55 +212,55 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               const SizedBox(height: 64.0),
               ProductCarousel(imgArray: imgArray),
-              Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: CardHorizontal(
-                    cta: "Book now",
-                    title: "Pet Spa",
-                    img: "https://via.placeholder.com/200?text=Spa+Booking",
-                    tap: () {
-                      Navigator.pushReplacementNamed(context, '/booking');
-                    }),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 16.0),
+              //   child: CardHorizontal(
+              //       cta: "Book now",
+              //       title: "Pet Spa",
+              //       img: "https://via.placeholder.com/200?text=Spa+Booking",
+              //       tap: () {
+              //         Navigator.pushReplacementNamed(context, '/booking');
+              //       }),
+              // ),
               const SizedBox(height: 8.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CardSmall(
-                      cta: "View booked history",
-                      title: "Booking History",
-                      img: "https://via.placeholder.com/200?text=History",
-                      tap: () {
-                        Navigator.pushReplacementNamed(context, '/booking_history');
-                      }),
-                  CardSmall(
-                      cta: "Shop now",
-                      title: "Pet Shop",
-                      img: "https://via.placeholder.com/200?text=Pet+Shop",
-                      tap: () {
-                        Navigator.pushReplacementNamed(context, '/');
-                      })
-                ],
-              ),
-              const SizedBox(height: 8.0),
-              CardHorizontal(
-                  cta: "View article",
-                  title: homeCards["Fashion"]?['title'] ?? "Fashion Title",
-                  img: homeCards["Fashion"]?['image'] ?? "https://via.placeholder.com/200?text=Fashion",
-                  tap: () {
-                    Navigator.pushReplacementNamed(context, '/pro');
-                  }),
-              const SizedBox(height: 8.0),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 32.0),
-                child: CardSquare(
-                    cta: "View article",
-                    title: homeCards["Argon"]?['title'] ?? "Argon Title",
-                    img: homeCards["Argon"]?['image'] ?? "https://via.placeholder.com/200?text=Argon",
-                    tap: () {
-                      Navigator.pushReplacementNamed(context, '/pro');
-                    }),
-              )
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     CardSmall(
+              //         cta: "View booked history",
+              //         title: "Booking History",
+              //         img: "https://via.placeholder.com/200?text=History",
+              //         tap: () {
+              //           Navigator.pushReplacementNamed(context, '/booking_history');
+              //         }),
+              //     CardSmall(
+              //         cta: "Shop now",
+              //         title: "Pet Shop",
+              //         img: "https://via.placeholder.com/200?text=Pet+Shop",
+              //         tap: () {
+              //           Navigator.pushReplacementNamed(context, '/');
+              //         })
+              //   ],
+              // ),
+              // const SizedBox(height: 8.0),
+              // CardHorizontal(
+              //     cta: "View article",
+              //     title: homeCards["Fashion"]?['title'] ?? "Fashion Title",
+              //     img: homeCards["Fashion"]?['image'] ?? "https://via.placeholder.com/200?text=Fashion",
+              //     tap: () {
+              //       Navigator.pushReplacementNamed(context, '/pro');
+              //     }),
+              // const SizedBox(height: 8.0),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 32.0),
+              //   child: CardSquare(
+              //       cta: "View article",
+              //       title: homeCards["Argon"]?['title'] ?? "Argon Title",
+              //       img: homeCards["Argon"]?['image'] ?? "https://via.placeholder.com/200?text=Argon",
+              //       tap: () {
+              //         Navigator.pushReplacementNamed(context, '/pro');
+              //       }),
+              // )
             ],
           ),
         ),

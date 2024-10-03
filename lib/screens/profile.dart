@@ -8,6 +8,7 @@ import 'package:project/core/rest_service.dart';
 import 'package:project/models/account.dart';
 import 'package:project/screens/auth/address_book_screen.dart';
 import 'package:project/screens/home.dart';
+import 'package:project/screens/pets/ListPetTagOrderScreen.dart';
 import 'package:project/screens/pets/list_pet.dart';
 import 'package:project/screens/shop/order_list_screen.dart';
 
@@ -253,6 +254,26 @@ class _ProfileState extends State<Profile> {
                           trailing: Icon(Icons.arrow_forward_ios),
                           onTap: () {
                             Utils.navigateTo(context, OrderListScreen());
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ListTile(
+                          title: Text(
+                            "Accessories Orders",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(
+                            "You Accessories orders",
+                            style: TextStyle(color: MaterialColors.muted),
+                          ),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                          onTap: () {
+                            Utils.navigateTo(context, ListPetTagOrderScreen());
                           },
                         ),
                       ),
