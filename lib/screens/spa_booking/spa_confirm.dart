@@ -115,13 +115,16 @@ class _SpaConfirmState extends State<SpaConfirm> {
       Position position = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(
           accuracy: LocationAccuracy.best,
-          distanceFilter: 10,
+          distanceFilter: 100,
         ),
       );
 
+      print('$position | Latitude: ${position.latitude}, Longitude: ${position.longitude}');
+
       var response = await RestService.get('/api/map/get-address?lat=${position.latitude}&lon=${position.longitude}');
+      print('/api/map/get-address?lat=${position.latitude}&lon=${position.longitude}');
       if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
+        var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
         var address = jsonDecode(jsonResponse['data'])['addresses'][0]['address']['freeformAddress'];
         setState(() {
           _address = address;
