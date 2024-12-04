@@ -209,26 +209,24 @@ class _RentPetHotelState extends State<RentPetHotel> {
       lastDate: DateTime(2100),
     );
 
-    if (pickedDate != null) {
-      setState(() {
-        if (isCheckIn) {
-          _checkInDate = pickedDate;
-          if (_checkOutDate != null && _checkOutDate!.isBefore(_checkInDate!)) {
-            _checkOutDate = null;
-          }
-        } else {
-          if (_checkInDate != null && pickedDate.isAfter(_checkInDate!)) {
-            _checkOutDate = pickedDate;
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Check-out date must be after check-in date')),
-            );
-          }
+    setState(() {
+      if (isCheckIn) {
+        _checkInDate = pickedDate;
+        if (_checkOutDate != null && _checkOutDate!.isBefore(_checkInDate!)) {
+          _checkOutDate = null;
         }
-        _calculateTotalPrice();
-      });
+      } else {
+        if (_checkInDate != null && pickedDate.isAfter(_checkInDate!)) {
+          _checkOutDate = pickedDate;
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Check-out date must be after check-in date')),
+          );
+        }
+      }
+      _calculateTotalPrice();
+    });
     }
-  }
 
   void _calculateTotalPrice() {
     if (_checkInDate != null && _checkOutDate != null) {

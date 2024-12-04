@@ -238,12 +238,10 @@ class _SpaConfirmState extends State<SpaConfirm> {
       lastDate: DateTime(2100),
     );
 
-    if (pickedDate != null) {
-      setState(() {
-        _selectedDate = pickedDate;
-      });
+    setState(() {
+      _selectedDate = pickedDate;
+    });
     }
-  }
 
   _pickTime() async {
     TimeOfDay? pickedTime = await showTimePicker(

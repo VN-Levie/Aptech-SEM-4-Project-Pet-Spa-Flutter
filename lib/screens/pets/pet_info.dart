@@ -100,7 +100,7 @@ class _PetInfoState extends State<PetInfo> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       alignment: Alignment.topCenter,
-                      image: NetworkImage(Utils.replaceLocalhost(pet!['avatarUrl'])), // Ảnh chính của thú cưng
+                      image: NetworkImage(Utils.replaceLocalhost(pet['avatarUrl'])), // Ảnh chính của thú cưng
                       fit: BoxFit.cover)),
             ),
             Container(
@@ -123,7 +123,7 @@ class _PetInfoState extends State<PetInfo> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 4.0),
                     child: Text(
-                      '${pet!['name']}',
+                      '${pet['name']}',
                       style: const TextStyle(fontSize: 28, color: Colors.white),
                       overflow: TextOverflow.ellipsis, // Cắt bớt nếu quá dài
                       maxLines: 1, // Giới hạn tên hiển thị trên 1 dòng
@@ -141,7 +141,7 @@ class _PetInfoState extends State<PetInfo> {
                           ),
                           Padding(
                             padding: const EdgeInsets.only(right: 8.0),
-                            child: Text("Height: ${pet!['height']} cm | Weight: ${pet!['weight']} kg", style: const TextStyle(color: Colors.white, fontSize: 16)),
+                            child: Text("Height: ${pet['height']} cm | Weight: ${pet['weight']} kg", style: const TextStyle(color: Colors.white, fontSize: 16)),
                           ),
                         ],
                       ),
@@ -179,7 +179,7 @@ class _PetInfoState extends State<PetInfo> {
                               style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
                             ),
                             const SizedBox(height: 6),
-                            Text(pet!['description'] ?? 'No description provided', style: const TextStyle(color: MaterialColors.muted)),
+                            Text(pet['description'] ?? 'No description provided', style: const TextStyle(color: MaterialColors.muted)),
                           ],
                         ),
                         const SizedBox(height: 16),

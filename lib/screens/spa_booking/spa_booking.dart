@@ -7,8 +7,6 @@ import 'package:project/core/rest_service.dart';
 import 'package:project/models/spa_category.dart';
 import 'package:project/widgets/list_spa_category.dart';
 import 'package:project/widgets/utils.dart';
-import 'service_selection.dart';
-import '../../core/database_helper.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/drawer.dart';
 import 'package:project/constants/theme.dart';

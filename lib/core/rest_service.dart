@@ -9,7 +9,6 @@ class RestService {
   // Hàm lấy lại token mới bằng refresh token
   Future<String?> refreshToken() async {
     String? refreshToken = await storage.read(key: 'refresh_token');
-    if (refreshToken == null) return null;
 
     final response = await http.post(
       Uri.parse('${AppConst.apiEndpoint}/auth/refresh-token'),
@@ -108,8 +107,6 @@ class RestService {
   static Future<String?> _attemptRefreshToken() async {
     FlutterSecureStorage storage = FlutterSecureStorage();
     String? refreshToken = await storage.read(key: 'refresh_token');
-
-    if (refreshToken == null) return null;
 
     final response = await http.post(
       Uri.parse('${AppConst.apiEndpoint}/auth/refresh-token'),

@@ -99,10 +99,8 @@ class AppController extends GetxController {
   void loadCartData() async {
     final prefs = await SharedPreferences.getInstance();
     List<String>? cartItems = prefs.getStringList('cart');
-    if (cartItems != null) {
-      listProduct.value = cartItems.map((item) => CartItem.fromJson(json.decode(item))).toList();
-    }
-    int total = listProduct.length;
+    listProduct.value = cartItems.map((item) => CartItem.fromJson(json.decode(item))).toList();
+      int total = listProduct.length;
     if (numberOfCartItems.value != total) {
       numberOfCartItems.value = total;
     }

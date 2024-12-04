@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print("token: $token");
     print("refresh token: $refreshToken");
     // Nếu token không tồn tại hoặc rỗng, chuyển hướng đến màn hình đăng nhập
-    if (token != null && token.isNotEmpty && !appController.isAuthenticated.value) {
+    if (token.isNotEmpty && !appController.isAuthenticated.value) {
       try {
         String url = '/api/auth/verify-token?token=$token';
         var response = await RestService.get(url);
@@ -133,10 +133,6 @@ class _HomeScreenState extends State<HomeScreen> {
           Utils.navigateTo(context, const LoginScreen());
         } else if (response.statusCode == 401) {
           print("401 Unauthorized, trying to refresh token... at home");
-          if (refreshToken == null) {
-            Utils.noti("Token expired. Please login again!!");
-            Utils.navigateTo(context, const LoginScreen());
-          }
           var response = await RestService.post('/api/auth/refresh-token', {
             'refresh_token': refreshToken,
           });

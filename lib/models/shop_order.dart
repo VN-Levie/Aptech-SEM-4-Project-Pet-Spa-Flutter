@@ -76,7 +76,7 @@ class ShopOrderDTO {
       'paymentType': paymentType,
       'paymentStatus': paymentStatus,
       'deliveryAddress': deliveryAddress,
-      'deliveryDate': deliveryDate!,
+      'deliveryDate': deliveryDate,
       'productQuantities': productQuantities.map((item) => item.toJson()).toList(),
       'receiverName': receiverName,
       'receiverPhone': receiverPhone,
