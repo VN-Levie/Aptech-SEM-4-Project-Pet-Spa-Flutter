@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     print("token: $token");
     print("refresh token: $refreshToken");
     // Nếu token không tồn tại hoặc rỗng, chuyển hướng đến màn hình đăng nhập
-    if (token.isNotEmpty && !appController.isAuthenticated.value) {
+    if (token!.isNotEmpty && !appController.isAuthenticated.value) {
       try {
         String url = '/api/auth/verify-token?token=$token';
         var response = await RestService.get(url);

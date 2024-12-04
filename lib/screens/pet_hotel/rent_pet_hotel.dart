@@ -216,7 +216,7 @@ class _RentPetHotelState extends State<RentPetHotel> {
           _checkOutDate = null;
         }
       } else {
-        if (_checkInDate != null && pickedDate.isAfter(_checkInDate!)) {
+        if (_checkInDate != null && pickedDate!.isAfter(_checkInDate!)) {
           _checkOutDate = pickedDate;
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
