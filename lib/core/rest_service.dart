@@ -13,8 +13,12 @@ class RestService {
 
     final response = await http.post(
       Uri.parse('${AppConst.apiEndpoint}/auth/refresh-token'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'refresh_token': refreshToken}),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: jsonEncode({
+        'refresh_token': refreshToken
+      }),
     );
 
     if (response.statusCode == 200) {
@@ -81,7 +85,7 @@ class RestService {
   static Future<http.Response> _sendRequestWithTokenRetry(http.Request request) async {
     try {
       // Gửi request
-      http.StreamedResponse streamedResponse = await request.send().timeout(const Duration(seconds: 15));
+      http.StreamedResponse streamedResponse = await request.send().timeout(const Duration(seconds: 30));
       http.Response response = await http.Response.fromStream(streamedResponse);
 
       // Kiểm tra nếu bị 401 thì thử refresh token và gửi lại yêu cầu
@@ -92,7 +96,7 @@ class RestService {
         if (newToken != null) {
           // Thêm token mới vào headers và gửi lại request
           request.headers['Authorization'] = 'Bearer $newToken';
-          streamedResponse = await request.send().timeout(const Duration(seconds: 15));
+          streamedResponse = await request.send().timeout(const Duration(seconds: 30));
           response = await http.Response.fromStream(streamedResponse);
         }
       }
@@ -100,7 +104,15 @@ class RestService {
       return response;
     } catch (e) {
       // Xử lý lỗi và trả về thông báo
-      return http.Response(json.encode({'status': 'error', 'message': 'Server is busy. Please try again later.'}), 503, headers: {'Content-Type': 'application/json'});
+      return http.Response(
+          json.encode({
+            'status': 'error',
+            'message': 'Server is busy. Please try again later.'
+          }),
+          503,
+          headers: {
+            'Content-Type': 'application/json'
+          });
     }
   }
 
@@ -113,8 +125,12 @@ class RestService {
 
     final response = await http.post(
       Uri.parse('${AppConst.apiEndpoint}/auth/refresh-token'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'refresh_token': refreshToken}),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: jsonEncode({
+        'refresh_token': refreshToken
+      }),
     );
 
     if (response.statusCode == 200) {

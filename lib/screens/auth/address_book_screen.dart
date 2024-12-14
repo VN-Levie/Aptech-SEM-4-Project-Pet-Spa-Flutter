@@ -48,7 +48,7 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
     try {
       var response = await RestService.get(apiUrl);
       if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
+        var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
         var data = jsonResponse['data'];
 
         if (data.isNotEmpty) {
@@ -65,16 +65,20 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
         Utils.noti("Failed to load address books: ${response.statusCode}");
       }
     } catch (e) {
-      if (e is SocketException) {
-        Utils.noti("No internet connection");
-      } else {
-        Utils.noti("Something went wrong. Please try again later.");
+      if (mounted) {
+        if (e is SocketException) {
+          Utils.noti("No internet connection");
+        } else {
+          Utils.noti("Something went wrong. Please try again later.");
+        }
       }
     } finally {
-      setState(() {
-        isLoading = false;
-        isLoadingMore = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+          isLoadingMore = false;
+        });
+      }
     }
   }
 
@@ -94,9 +98,9 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
         Utils.noti("Failed to delete address book: ${response.statusCode}");
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error deleting address: $e')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Error deleting address: $e')),
+      // );
     }
   }
 
@@ -153,9 +157,16 @@ class _AddressBookScreenState extends State<AddressBookScreen> {
                   onRefresh: _refreshAddressBooks,
                   child: addressBooks.isEmpty && !isLoading
                       ? Center(
-                          child: Text(
-                            'No address books found. Click the button above to add a new address.',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                          child: Card(
+                            margin: const EdgeInsets.symmetric(horizontal: 16),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                'No address books found. Click the button above to add a new address.',
+                                style: TextStyle(fontSize: 16, color: Colors.grey),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
                           ),
                         )
                       : ListView.builder(

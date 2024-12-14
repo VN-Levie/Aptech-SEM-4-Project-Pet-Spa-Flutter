@@ -64,9 +64,11 @@ class _OrderListScreenState extends State<OrderListScreen> {
     } catch (e) {
       Utils.noti('Error loading orders: $e');
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -97,9 +99,11 @@ class _OrderListScreenState extends State<OrderListScreen> {
       }
     } catch (e) {
       Utils.noti('Error loading address books: $e');
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -144,112 +148,111 @@ class _OrderListScreenState extends State<OrderListScreen> {
   }
 
   Future<void> _editDeliveryAddress(int orderId, int index) async {
-  String? selectedAddressId = orders[index].receiverAddressId.toString();
-  Address? selectedAddress;
+    String? selectedAddressId = orders[index].receiverAddressId.toString();
+    Address? selectedAddress;
 
-  if (selectedAddressId == '0' || selectedAddressId == 'null') {
-    selectedAddressId = addressBooks.first.id.toString();
-  }
+    if (selectedAddressId == '0' || selectedAddressId == 'null') {
+      selectedAddressId = addressBooks.first.id.toString();
+    }
 
-  selectedAddress = addressBooks.firstWhere((element) => element.id == int.parse(selectedAddressId!));
+    selectedAddress = addressBooks.firstWhere((element) => element.id == int.parse(selectedAddressId!));
 
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-          return Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text('Select Delivery Address', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                SizedBox(
-                  height: 150, // Giới hạn chiều cao cho Dropdown
-                  child: SingleChildScrollView(
-                    child: DropdownButtonFormField<String>(
-                      value: selectedAddressId,
-                      items: addressBooks.map<DropdownMenuItem<String>>((address) {
-                        return DropdownMenuItem<String>(
-                          value: address.id.toString(),
-                          child: Text(
-                            '${address.street}, ${address.city}, ${address.country}',
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedAddressId = value;
-                          selectedAddress = addressBooks.firstWhere((element) => element.id == int.parse(value!));
-                          print('Selected Address updated: $selectedAddress');
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Select Delivery Address', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  SizedBox(
+                    height: 150, // Giới hạn chiều cao cho Dropdown
+                    child: SingleChildScrollView(
+                      child: DropdownButtonFormField<String>(
+                        value: selectedAddressId,
+                        items: addressBooks.map<DropdownMenuItem<String>>((address) {
+                          return DropdownMenuItem<String>(
+                            value: address.id.toString(),
+                            child: Text(
+                              '${address.street}, ${address.city}, ${address.country}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            selectedAddressId = value;
+                            selectedAddress = addressBooks.firstWhere((element) => element.id == int.parse(value!));
+                            print('Selected Address updated: $selectedAddress');
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                TextButton.icon(
-                  onPressed: () async {
-                    Navigator.pop(context);
-                    final result = await Utils.navigateTo(context, const AddressBookFormScreen());
-                    if (result == 'success' || result == 'update') {
-                      await _fetchAddressBooks(); // Tải lại danh sách địa chỉ sau khi thêm mới
-                      if (isLoading == false) {
-                        const Center(child: CircularProgressIndicator());
+                  const SizedBox(height: 10),
+                  TextButton.icon(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      final result = await Utils.navigateTo(context, const AddressBookFormScreen());
+                      if (result == 'success' || result == 'update') {
+                        await _fetchAddressBooks(); // Tải lại danh sách địa chỉ sau khi thêm mới
+                        if (isLoading == false) {
+                          const Center(child: CircularProgressIndicator());
+                        }
+                        _editDeliveryAddress(orderId, index);
                       }
-                      _editDeliveryAddress(orderId, index);
-                    }
-                  },
-                  icon: const Icon(Icons.add),
-                  label: const Text('Add New Address'),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (selectedAddress != null) {
-                        print('Selected Address for Update: $selectedAddressId | $selectedAddress');
-                        _updateDeliveryAddress(orderId, selectedAddress!); // Đảm bảo rằng _selectedAddress được cập nhật đúng
+                    },
+                    icon: const Icon(Icons.add),
+                    label: const Text('Add New Address'),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (selectedAddress != null) {
+                          print('Selected Address for Update: $selectedAddressId | $selectedAddress');
+                          _updateDeliveryAddress(orderId, selectedAddress!); // Đảm bảo rằng _selectedAddress được cập nhật đúng
+                          Navigator.pop(context); // Đóng BottomSheet
+                        } else {
+                          Utils.noti("Please select an address before updating.");
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: MaterialColors.socialFacebook,
+                      ),
+                      child: const Text('Update Address', style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
                         Navigator.pop(context); // Đóng BottomSheet
-                      } else {
-                        Utils.noti("Please select an address before updating.");
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MaterialColors.socialFacebook,
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: MaterialColors.error,
+                      ),
+                      child: const Text('Cancel', style: TextStyle(color: Colors.white)),
                     ),
-                    child: const Text('Update Address', style: TextStyle(color: Colors.white)),
                   ),
-                ),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context); // Đóng BottomSheet
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: MaterialColors.error,
-                    ),
-                    child: const Text('Cancel', style: TextStyle(color: Colors.white)),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    },
-  );
-}
-
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

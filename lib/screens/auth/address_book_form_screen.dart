@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,17 +24,19 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
 
   bool _isLoading = false;
   bool _isEditMode = false;
+  bool isSearching = false;
+  Timer? _debounce;
+  List<Map<String, dynamic>> addressSuggestions = [];
 
-  // Controllers để lấy giá trị từ form
   final TextEditingController _streetController = TextEditingController();
   final TextEditingController _cityController = TextEditingController();
   final TextEditingController _stateController = TextEditingController();
   final TextEditingController _postalCodeController = TextEditingController();
   final TextEditingController _countryController = TextEditingController();
-  //Họ tên, số điện thoại, email, ghi chú
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
   @override
   void initState() {
@@ -41,7 +44,6 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
     _countryController.text = 'Vietnam';
     _postalCodeController.text = '700000';
     _fullNameController.text = appController.account.name;
-    // _phoneNumberController.text = appController.account.phone;
     _emailController.text = appController.account.email;
     if (widget.addressBookId != null) {
       _isEditMode = true;
@@ -49,18 +51,67 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
     }
   }
 
-  // Lấy thông tin AddressBook từ API
+  void _onSearchAddressChanged(String value) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 950), () {
+      if (_addressController.text.isNotEmpty) {
+        _searchAddress(_addressController.text);
+      } else {
+        setState(() {
+          addressSuggestions.clear();
+        });
+      }
+    });
+  }
+
+  Future<void> _searchAddress(String query) async {
+    setState(() {
+      isSearching = true;
+    });
+
+    try {
+      var response = await RestService.get('/api/map/search-place?query=$query');
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
+        var data = jsonDecode(jsonResponse['data'])['results'];
+        setState(() {
+          addressSuggestions = data.map<Map<String, dynamic>>((result) {
+            String? streetNumberStr = result['address']?['streetNumber'];
+            String streetName = streetNumberStr != null && streetNumberStr.isNotEmpty ? '$streetNumberStr, ${result['address']?['streetName'] ?? ''}' : result['address']?['streetName'] ?? '';
+
+            return {
+              'name': result['address']['freeformAddress'],
+              'street': streetName,
+              'city': result['address']['municipality'],
+              'state': result['address']['countrySubdivision'],
+              'postalCode': result['address']['postalCode'],
+              'country': result['address']['country'],
+            };
+          }).toList();
+        });
+      } else {
+        Utils.noti("Error fetching addresses.");
+      }
+    } catch (e) {
+      print(e);
+      Utils.noti("Error fetching addresses.");
+    } finally {
+      setState(() {
+        isSearching = false;
+      });
+    }
+  }
+
   Future<void> _fetchAddressBookDetails(int addressBookId) async {
     setState(() {
       _isLoading = true;
     });
 
     try {
-      int accountId = appController.account.id;
       var response = await RestService.get('/api/address-books/$addressBookId');
 
       if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
+        var jsonResponse = jsonDecode(utf8.decode(response.bodyBytes));
         var data = jsonResponse['data'];
 
         if (data.isEmpty) {
@@ -74,7 +125,7 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
           _countryController.text = data['country'];
           _fullNameController.text = data['fullName'] ?? '';
           _phoneNumberController.text = data['phoneNumber'] ?? '';
-          _emailController.text = data['email'] ?? '';         
+          _emailController.text = data['email'] ?? '';
           setState(() {
             _isLoading = false;
           });
@@ -108,7 +159,6 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
         'phoneNumber': _phoneNumberController.text,
         'email': _emailController.text,
       };
-      print(body);
 
       var response = await RestService.put(apiUrl, body);
 
@@ -144,7 +194,7 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
         'email': _emailController.text,
         'accountId': accountId,
       };
-      print(body);
+
       var response = await RestService.post(apiUrl, body);
 
       if (response.statusCode == 201) {
@@ -181,9 +231,51 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Input(
+                        prefixIcon: const Icon(Icons.search),
+                        suffixIcon: _addressController.text.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () => setState(() => _addressController.clear()),
+                              )
+                            : null,
+
+                        autofocus: true,
+                        placeholder: 'Search Address',
+                        controller: _addressController,
+                        // outlineBorder: true,
+                        enabledBorderColor: MaterialColors.placeholder,
+                        focusedBorderColor: MaterialColors.primary,
+                        onChanged: _onSearchAddressChanged,
+                      ),
+                      if (isSearching) const CircularProgressIndicator(),
+                      if (addressSuggestions.isNotEmpty)
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: addressSuggestions.length,
+                          itemBuilder: (context, index) {
+                            var suggestion = addressSuggestions[index];
+                            return ListTile(
+                              title: Text(suggestion['name']),
+                              onTap: () {
+                                setState(() {
+                                  _addressController.text = suggestion['name'];
+                                  _streetController.text = suggestion['street'];
+                                  _cityController.text = suggestion['city'];
+                                  _stateController.text = suggestion['state'];
+                                  _postalCodeController.text = suggestion['postalCode'];
+                                  _countryController.text = suggestion['country'];
+                                  addressSuggestions.clear();
+                                });
+                              },
+                            );
+                          },
+                        ),
+                      const SizedBox(height: 16),
+                      Input(
+                        prefixIcon: const Icon(Icons.directions),
                         placeholder: 'Street',
                         controller: _streetController,
-                        outlineBorder: false,
+                        outlineBorder: true,
                         enabledBorderColor: MaterialColors.placeholder,
                         focusedBorderColor: MaterialColors.primary,
                         validator: (value) {
@@ -195,9 +287,10 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
                       ),
                       const SizedBox(height: 16),
                       Input(
+                        prefixIcon: const Icon(Icons.location_city),
                         placeholder: 'City',
                         controller: _cityController,
-                        outlineBorder: false,
+                        outlineBorder: true,
                         enabledBorderColor: MaterialColors.placeholder,
                         focusedBorderColor: MaterialColors.primary,
                         validator: (value) {
@@ -209,9 +302,10 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
                       ),
                       const SizedBox(height: 16),
                       Input(
+                        prefixIcon: const Icon(Icons.map),
                         placeholder: 'State',
                         controller: _stateController,
-                        outlineBorder: false,
+                        outlineBorder: true,
                         enabledBorderColor: MaterialColors.placeholder,
                         focusedBorderColor: MaterialColors.primary,
                         validator: (value) {
@@ -223,10 +317,11 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
                       ),
                       const SizedBox(height: 16),
                       Input(
+                        prefixIcon: const Icon(Icons.local_post_office),
                         placeholder: 'Postal Code',
                         controller: _postalCodeController,
                         keyboardType: TextInputType.number,
-                        outlineBorder: false,
+                        outlineBorder: true,
                         enabledBorderColor: MaterialColors.muted,
                         focusedBorderColor: MaterialColors.primary,
                         validator: (value) {
@@ -238,9 +333,10 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
                       ),
                       const SizedBox(height: 16),
                       Input(
+                        prefixIcon: const Icon(Icons.public),
                         placeholder: 'Country',
                         controller: _countryController,
-                        outlineBorder: false,
+                        outlineBorder: true,
                         enabledBorderColor: MaterialColors.placeholder,
                         focusedBorderColor: MaterialColors.primary,
                         validator: (value) {
@@ -250,10 +346,12 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
                           return null;
                         },
                       ),
+                      const SizedBox(height: 16),
                       Input(
+                        prefixIcon: const Icon(Icons.person),
                         placeholder: 'Full Name',
                         controller: _fullNameController,
-                        outlineBorder: false,
+                        outlineBorder: true,
                         enabledBorderColor: MaterialColors.placeholder,
                         focusedBorderColor: MaterialColors.primary,
                         validator: (value) {
@@ -265,10 +363,11 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
                       ),
                       const SizedBox(height: 16),
                       Input(
+                        prefixIcon: const Icon(Icons.phone),
                         placeholder: 'Phone Number',
                         controller: _phoneNumberController,
                         keyboardType: TextInputType.phone,
-                        outlineBorder: false,
+                        outlineBorder: true,
                         enabledBorderColor: MaterialColors.placeholder,
                         focusedBorderColor: MaterialColors.primary,
                         validator: (value) {
@@ -280,10 +379,11 @@ class _AddressBookFormScreenState extends State<AddressBookFormScreen> {
                       ),
                       const SizedBox(height: 16),
                       Input(
+                        prefixIcon: const Icon(Icons.email),
                         placeholder: 'Email',
                         controller: _emailController,
                         keyboardType: TextInputType.emailAddress,
-                        outlineBorder: false,
+                        outlineBorder: true,
                         enabledBorderColor: MaterialColors.placeholder,
                         focusedBorderColor: MaterialColors.primary,
                         validator: (value) {

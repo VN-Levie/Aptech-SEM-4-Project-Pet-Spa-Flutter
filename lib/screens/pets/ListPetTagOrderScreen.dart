@@ -53,9 +53,11 @@ class _ListPetTagOrderScreenState extends State<ListPetTagOrderScreen> {
       print(e);
       Utils.noti('Error loading pet tag orders: $e');
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 

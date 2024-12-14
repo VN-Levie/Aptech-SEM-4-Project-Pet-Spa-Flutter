@@ -14,6 +14,7 @@ import 'package:project/widgets/dropdown_input.dart';
 import 'package:project/widgets/navbar.dart';
 import 'package:project/widgets/utils.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SpaConfirm extends StatefulWidget {
   final SpaService service;
@@ -112,6 +113,14 @@ class _SpaConfirmState extends State<SpaConfirm> {
     _addressController.removeListener(_onSearchAddressChanged);
 
     try {
+      // Kiểm tra và yêu cầu quyền truy cập vị trí
+      bool isPermissionGranted = await _handleLocationPermission();
+      if (!isPermissionGranted) {
+        Utils.noti("Location permission is required to proceed.");
+        return;
+      }
+
+      // Lấy vị trí hiện tại
       Position position = await Geolocator.getCurrentPosition(
         locationSettings: LocationSettings(
           accuracy: LocationAccuracy.best,
@@ -121,6 +130,7 @@ class _SpaConfirmState extends State<SpaConfirm> {
 
       print('$position | Latitude: ${position.latitude}, Longitude: ${position.longitude}');
 
+      // Gửi yêu cầu lấy địa chỉ từ API
       var response = await RestService.get('/api/map/get-address?lat=${position.latitude}&lon=${position.longitude}');
       print('/api/map/get-address?lat=${position.latitude}&lon=${position.longitude}');
       if (response.statusCode == 200) {
@@ -139,12 +149,35 @@ class _SpaConfirmState extends State<SpaConfirm> {
         Utils.noti("Failed to get address.");
       }
     } catch (e) {
+      print(e);
       Utils.noti("Failed to get current location.");
     } finally {
       setState(() {
         isLoadingLocation = false;
       });
     }
+  }
+
+// Phương thức kiểm tra và yêu cầu quyền vị trí
+  Future<bool> _handleLocationPermission() async {
+    // Kiểm tra quyền vị trí
+    PermissionStatus permission = await Permission.location.status;
+
+    // Nếu quyền chưa được cấp, yêu cầu quyền
+    if (permission.isDenied) {
+      PermissionStatus result = await Permission.location.request();
+      return result.isGranted;
+    }
+
+    // Nếu quyền bị từ chối vĩnh viễn, thông báo người dùng và mở cài đặt
+    if (permission.isPermanentlyDenied) {
+      Utils.noti("Please enable location permission in app settings.");
+      await openAppSettings();
+      return false;
+    }
+
+    // Quyền đã được cấp
+    return permission.isGranted;
   }
 
   Future<void> _calculateDistanceAndTime(double lat, double lon) async {

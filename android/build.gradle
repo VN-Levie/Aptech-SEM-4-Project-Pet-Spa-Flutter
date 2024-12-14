@@ -1,23 +1,22 @@
-allprojects {
-    ext.kotlin_version = '1.9.0'
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
 buildscript {
-    ext.kotlin_version = '1.9.0' // Hoặc phiên bản mới hơn
+    repositories {
+        google() // Phải có google()
+        mavenCentral() // Nên có mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.1.0' // Tương thích với Gradle 8.9
+        classpath 'com.google.gms:google-services:4.3.15' // Đảm bảo khai báo plugin này
+    }
+}
+
+allprojects {
     repositories {
         google()
         mavenCentral()
     }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.2' // Hoặc phiên bản mới hơn
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.14'
-    }
 }
+
+
 
 rootProject.buildDir = "../build"
 subprojects {

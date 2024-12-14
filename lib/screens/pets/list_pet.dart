@@ -48,7 +48,7 @@ class _PetScreenState extends State<PetScreen> {
     final String apiUrl = '/api/pets/account/$accountId';
 
     try {
-      var response = await RestService.get(apiUrl);   
+      var response = await RestService.get(apiUrl);
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
         var data = jsonResponse['data'];
@@ -74,14 +74,15 @@ class _PetScreenState extends State<PetScreen> {
         Utils.noti("Something went wrong. Please try again later.");
       }
     } finally {
-      setState(() {
-        isLoading = false;
-        isLoadingMore = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+          isLoadingMore = false;
+        });
+      }
     }
   }
 
- 
   //xóa thú cưng
   Future<void> _deletePet(int petId, int index) async {
     final String apiUrl = '/api/pets/$petId';
@@ -168,10 +169,17 @@ class _PetScreenState extends State<PetScreen> {
                 RefreshIndicator(
                   onRefresh: _refreshPets,
                   child: pets.isEmpty && !isLoading // Kiểm tra xem danh sách có trống và không đang tải dữ liệu
-                      ? Center(
-                          child: Text(
+                        ? Center(
+                          child: Card(
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
                             'No pets found. Click the button above to add a new pet.',
                             style: TextStyle(fontSize: 16, color: Colors.grey),
+                            textAlign: TextAlign.center,
+                            ),
+                          ),
                           ),
                         )
                       : ListView.builder(
